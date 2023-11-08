@@ -31,8 +31,6 @@ const Event = ({ event }) => {
           <div className="mt-2">
             <div className="flex justify-center gap-2">
               
-              
-
               <Link href={`/admin/modify-event/${event.id}`}>
                 <button className="bg-blue-500 hover:bg-blue-700 text-white py-2 px-3 rounded block ">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
