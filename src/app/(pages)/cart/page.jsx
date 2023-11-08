@@ -1,3 +1,4 @@
+
 "use client"
 import { AddCart, removeFromCart } from "@/redux/action/cartAction";
 import { useSelector, useDispatch } from 'react-redux';
@@ -103,3 +104,4 @@ const CartPage = () => {
   );
 }
 export default CartPage;
+ 

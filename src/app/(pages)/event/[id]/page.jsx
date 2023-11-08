@@ -1,3 +1,4 @@
+ 
 import EventDetail from "@/components/EventDetail";
 const loadEvent = async(id) =>{
   const res = await fetch(`http://localhost:3001/events/${id}`);
@@ -10,5 +11,6 @@ export default async function EventPage ({params}){
   return (
     <EventDetail detailEvent={detailEvent}/>
   );
+ 
 }
 
