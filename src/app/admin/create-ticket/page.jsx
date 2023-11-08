@@ -72,7 +72,7 @@ const TicketPage = () => {
 
   useEffect(() => {
     dispatch(getEvents());
-  }, []);
+  }, [dispatch]);
 
   return (
     <div className="flex justify-center items-center h-screen mt-12">

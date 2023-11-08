@@ -102,16 +102,16 @@ export const filterEventsByDate = (date) => {
   };
 };
 
-// export const filterEventsByTypeAndDate = (eventType, date) => {
-//   return async (dispatch) => {
-//     try {
-//       const response = await axios.get(`/events?eventType=${eventType}&date=${date}`);
-//       dispatch({ type: FILTER_EVENTS, payload: response.data });
-//     } catch (error) {
-//       dispatch({ type: FILTER_EVENTS_FAILURE, payload: error.message });
-//     }
-//   };
-// };
+export const filterEventsByTypeAndDate = (eventType, date) => {
+  return async (dispatch) => {
+    try {
+      const response = await axios.get(`/events?eventType=${eventType}&date=${date}`);
+      dispatch({ type: FILTER_EVENTS, payload: response.data });
+    } catch (error) {
+      dispatch({ type: FILTER_EVENTS_FAILURE, payload: error.message });
+    }
+  };
+};
 
 
 export const setCurrentPage = (page) => {
