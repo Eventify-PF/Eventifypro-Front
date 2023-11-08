@@ -16,6 +16,7 @@
     "@mui/material": "^5.14.15",
     "@reduxjs/toolkit": "^1.9.7",
     "axios": "^1.5.1",
+    "js-cookie": "^3.0.5",
     "mui-pagination": "^1.0.5",
     "next": "13.5.6",
     "react": "^18",
