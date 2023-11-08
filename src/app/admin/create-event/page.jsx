@@ -31,7 +31,7 @@ const EventPage = () => {
 
   useEffect(() => {
     dispatch(getAllEventTypes());
-  }, []);
+  }, [dispatch]);
 
   const handleChange = (e) => {
     setEvent({ ...event, [e.target.name]: e.target.value });
