@@ -1,7 +1,7 @@
 import { Nunito } from 'next/font/google'
 import { Providers } from "@/redux/provider";
 import { UserProvider } from '@auth0/nextjs-auth0/client';
-import Navbar from '@/components/Navbar/Navbar';
+import { Toaster } from "react-hot-toast";
 import './globals.css'
 
 export const metadata = {
@@ -22,6 +22,10 @@ export default function RootLayout({ children }) {
       <UserProvider>
           <Providers>
             {children}
+            <Toaster
+            position="top-center"
+            reverseOrder={true}
+          />
           </Providers>
       </UserProvider>
        
