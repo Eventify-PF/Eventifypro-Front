@@ -1,123 +1,104 @@
-// "use client";
-// import {
-//   DecreaseQuantity,
-//   DeleteCart,
-//   IncreaseQuantity,
-// } from "@/redux/action/cartAction";
-// import { useSelector, useDispatch } from "react-redux";
-// import { useEffect } from "react";
-// import { useRouter } from "next/navigation";
+"use client"
+import { AddCart, removeFromCart } from "@/redux/action/cartAction";
+import { useSelector, useDispatch } from 'react-redux';
+import { useRouter } from 'next/navigation'
+import Container from "@/components/Container";
+import Link from "next/link";
+const CartPage = () => {
+  const router = useRouter()
+  const dispatch = useDispatch();
+  const ticketsState = useSelector((state) => state.cartReducer);
+  const {cartItems, itemsPrice, loading} = ticketsState
+const removeFromCartHandler = (id) => {
+    dispatch(removeFromCart(id))
+  }
+  const addToCartHandler = async (ticket, quantity) => {
+    dispatch(AddCart({ ...ticket, quantity }))
+  }
+  return (
+    <>
+      <h1 className="mb-10 text-center text-4xl font-bold my-10">Tickets</h1>
+      <Container>
+      {loading ? (
+        <div>Loading ....</div>
+      ): cartItems.length === 0 ? (
+        <div className="text-center font-bold">
+          No Tickets in the Cart. <Link href="/event">Go shopping</Link>
+        </div>
+      ):(
 
+        <div className="grid md:grid-cols-4 md:gap-5  bg-white ">
+          <div className="overflow-x-auto md:col-span-3">
+            <table className="min-w-full">
+              <thead>
+                <tr>
+                  <th className="border border-slate-300 p-2 text-start">Title</th>
+                  <th className="border border-slate-300 p-2 text-left">Ticket</th>
+                  <th className="border border-slate-300 p-2 text-left">Quantity</th>
+                  <th className="border border-slate-300 p-2">Price</th>
+                  <th className="border border-slate-300 p-2">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {cartItems.map((item) => (
+                  <tr key={item.id}>
+                    <td className="p-5 text-start">{item.title}</td>
+                    <td className="p-2 text-left">{item.name}</td>
+                    <td className="p-5 text-left">
+                      <select
+                        value={item.quantity}
+                        onChange={(e) =>
+                          addToCartHandler(item, Number(e.target.value))
+                        }
+                        className="h-full rounded-l border block  w-full bg-white border-gray-400 text-gray-700 py-1 px-3  leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                      >
+                        {[...Array(item.stock).keys()].map((x) => (
+                          <option key={x + 1} value={x + 1}>
+                            {x + 1}
+                          </option>
+                        ))}
+                      </select>
+                    </td>
+                    <td className="p-5 text-center">${item.price}</td>
+                    <td className="p-5 text-center">
+                      <button
+                        className="default-button"
+                        onClick={() => removeFromCartHandler(item.id)}
+                      >
+                        Delete
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <div>
+            <div className="card p-5">
+              <ul>
+                <li>
+                  <div className="pb-3 text-lg">
+                    Total({cartItems.reduce((a, c) => a + c.quantity, 0)}) : $
+                    {itemsPrice}
+                  </div>
+                </li>
+                <li>
+                  <button
+                    onClick={() => router.push('/shipping')}
+                    className="bg-slate-500 px-5 py-2 rounded-lg uppercase text-white font-bold text-sm w-full"
+                  >
+                    Proceed to checkout
+                  </button>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      )}
 
-// const CartPage = () => {
-//   const router = useRouter();
-//   const dispatch = useDispatch();
-//   const ticketsState = useSelector((state) => state.cartReducer);
-//   const { carts } = ticketsState;
-//   const ListCart = [];
-//   let TotalCart = 0;
-//   Object.keys(carts).forEach(function (item) {
-//     TotalCart += carts[item].quantity * carts[item].price;
-//     ListCart.push(carts[item]);
-//   });
- 
-//   useEffect(() => {
-//     // Verifica si el código se está ejecutando en el lado del cliente
-//     if (typeof window !== "undefined") {
-//       // Ejecuta la redirección solo en el lado del cliente
-//       if (carts.length === 0) {
-//         router.push("/event");
-//       }
-//     }
-//   }, []);
-//   return (
-//     <>
-//       <h1 className="mb-10 text-center text-2xl font-bold">Tickets</h1>
-//       <div className="mx-auto max-w-5xl justify-center px-6 md:flex md:space-x-6 xl:px-0">
-//         <div className="rounded-lg md:w-2/3">
-//           {ListCart.map((eventTicket, key) => (
-//             <div
-//               key={eventTicket.id}
-//               className="justify-between mb-6 rounded-lg bg-white p-6 shadow-md sm:flex sm:justify-start"
-//             >
-//               <img
-//                 src={eventTicket.image}
-//                 alt="product-image"
-//                 className="w-full rounded-lg sm:w-40"
-//               />
-//               <div className="sm:ml-4 sm:flex sm:w-full sm:justify-between">
-//                 <div className="mt-5 sm:mt-0">
-//                   <h2 className="text-lg font-bold text-gray-900">
-//                     {eventTicket.title}
-//                   </h2>
-//                   <p className="mt-1 text-xs text-gray-700">
-//                     {eventTicket.name}
-//                   </p>
-//                 </div>
-//                 <div className="mt-4 flex justify-between sm:space-y-6 sm:mt-0 sm:block sm:space-x-6">
-//                   <div className="flex items-center border-gray-100">
-//                     <span
-//                       className="cursor-pointer rounded-l bg-gray-100 py-1 px-3.5 duration-100 hover:bg-blue-500 hover:text-blue-50"
-//                       onClick={() => dispatch(DecreaseQuantity(key))}
-//                     >
-//                       -
-//                     </span>
-//                     <span className="bg-gray-400 w-10 text-center text-xl px-1 py-1 text-white font-bold">
-//                       {eventTicket.quantity}
-//                     </span>
-//                     <span
-//                       className="cursor-pointer rounded-r bg-gray-100 py-1 px-3 duration-100 hover:bg-blue-500 hover:text-blue-50"
-//                       onClick={() => dispatch(IncreaseQuantity(key))}
-//                     >
-//                       +
-//                     </span>
-//                   </div>
-//                   <div className="flex items-center space-x-4">
-//                     <p className="text-sm">
-//                       {(
-//                         eventTicket.quantity * eventTicket.price
-//                       ).toLocaleString("en-US")}{" "}
-//                       $
-//                     </p>
-//                     <span
-//                       className="cursor-pointer rounded-r bg-gray-100 py-1 px-3 duration-100 hover:text-blue-50"
-//                       onClick={() => dispatch(DeleteCart(key))}
-//                     >
-//                       X
-//                     </span>
-//                   </div>
-//                 </div>
-//               </div>
-//             </div>
-//           ))}
-//         </div>
-//         <div className="mt-6 h-full rounded-lg border bg-white p-6 shadow-md md:mt-0 md:w-1/3">
-//           <div className="mb-2 flex justify-between">
-//             <p className="text-gray-700">Subtotal</p>
-//             {/* <p className="text-gray-700">{(price).toLocaleString('en-US')} $</p> */}
-//           </div>
-//           <hr className="my-4" />
-//           <div className="flex justify-between">
-//             <p className="text-lg font-bold">Total</p>
-//             <div className="">
-//               <p className="mb-1 text-lg font-bold">
-//                 {Number(TotalCart).toLocaleString("en-US")} $
-//               </p>
-//             </div>
-//           </div>
-//           <div className="flex gap-3">
-//             <button className="transition-colors text-sm bg-blue-600 hover:bg-blue-700 p-2 rounded-sm w-full text-white text-hover shadow-md">
-//               FINISH
-//             </button>
-//           </div>
-//           <div className="flex gap-3 mt-2">
-//             <button className="transition-colors text-sm bg-white border border-gray-600 p-2 rounded-sm w-full text-gray-700 text-hover shadow-md">
-//               ADD MORE TICKET
-//             </button>
-//           </div>
-//         </div>
-//       </div>
-//     </>
-//   );
-// };
-// export default CartPage;
+    </Container>
+    </>
+
+  );
+}
+export default CartPage;
