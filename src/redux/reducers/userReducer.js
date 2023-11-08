@@ -3,7 +3,7 @@ import {POST_USER, GET_USER, SEARCH_USER_BY_EMAIL} from "../action-type/userCons
 const initialState = {
     userDetail: [],
     isAdmin: false,
-    searchedUser: null,
+    searchUser: {},
 } 
 
 function userReducer(state = initialState, action) {
@@ -22,9 +22,10 @@ function userReducer(state = initialState, action) {
         };
 
       case SEARCH_USER_BY_EMAIL:
+        console.log("Datos del backend recibidos:", action.payload); // Agrega este console.log
       return {
         ...state,
-        searchedUser: action.payload,
+        searchUser: action.payload,
         };
 default:
   return state; // Agrega este caso predeterminado
