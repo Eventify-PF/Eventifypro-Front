@@ -1,20 +1,21 @@
-import { AddCart } from '@/redux/action/cartAction';
-import React, { useState } from 'react';
+import Cookies from 'js-cookie';
+import { useState, useEffect } from 'react';
+ 
 
 const Ticket = ({ticket, addTicket}) => {
-    const [selectedQuantity, setSelectedQuantity] = useState(0);
+  const cookieName = `selectedQuantity_${ticket.id}`;
+  const storedQuantity = Cookies.get(cookieName) || '0';
+  const [selectedQuantity, setSelectedQuantity] = useState(storedQuantity);
 
   const handleQuantityChange = (event) => {
-    setSelectedQuantity(parseInt(event.target.value, 10));
+    const quantity = parseInt(event.target.value, 10);
+    setSelectedQuantity(quantity);
+    addTicket({ ...ticket, quantity});
   };
 
-  const handleAddToCart = () => {
-    
-    if (selectedQuantity > 0) {
-      addTicket({ ...ticket, quantity: selectedQuantity });
-      setSelectedQuantity(0);
-    }
-  };
+  useEffect(() => {
+    Cookies.set(cookieName, selectedQuantity, { expires: 7 });
+  }, [selectedQuantity, cookieName]);
     
   return (
     <div className="py-4 border-b border-gray-200 flex items-center justify-between p-6">
@@ -28,22 +29,22 @@ const Ticket = ({ticket, addTicket}) => {
         </div>
       </div>
 
-      <div className="flex items-center">
-        <div className="flex items-center mt-2">
-          <input
-            type="number"
-            min="0"
-            value={selectedQuantity}
-            onChange={handleQuantityChange}
-            className="w-16 border p-2 mr-2"
-          />
-          <button
-            onClick={handleAddToCart}
-            className="bg-gray-600 text-white px-4 py-2 rounded"
-          >
-            Add
-          </button>
-        </div>
+      <div className="flex items-center mt-2">
+        <select
+          value={selectedQuantity}
+          onChange={handleQuantityChange}
+          className="rounded border p-2 px-12 py-2  outline-none ring-indigo-300  focus:ring
+          dark:text-white dark:bg-gray-800"
+        >
+          <option value="0">
+            Select Ticket
+          </option>
+          {[...Array(ticket.stock).keys()].map((x) => (
+            <option key={x + 1} value={x.toString()}>
+              {x}
+            </option>
+          ))}
+        </select>
       </div>
     </div>
   );
