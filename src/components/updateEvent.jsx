@@ -6,7 +6,7 @@ import validateForm from "@/utils/validateForm";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-const EditEventForm = ({ detailEvent }) => {
+export default function EditEventForm ({ detailEvent }) {
   const dispatch = useDispatch();
   const [errors, setErrors] = useState({});
   const [message, setMessage] = useState("");
@@ -168,4 +168,3 @@ const EditEventForm = ({ detailEvent }) => {
   );
 };
 
-export default EditEventForm;

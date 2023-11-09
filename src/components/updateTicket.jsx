@@ -5,7 +5,7 @@ const { updateTicket } = require("@/redux/action/ticketActions");
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 
-const EditTicketForm = ({ detailTicket }) => {
+export default function EditTicketForm ({ detailTicket }) {
   const dispatch = useDispatch();
   const [errors, setErrors] = useState({});
   const [message, setMessage] = useState("");
@@ -114,4 +114,3 @@ const EditTicketForm = ({ detailTicket }) => {
   );
 };
 
-export default EditTicketForm;

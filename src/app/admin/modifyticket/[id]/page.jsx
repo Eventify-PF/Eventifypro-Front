@@ -1,4 +1,4 @@
-"use client";
+
 import EditTicketForm from "@/components/updateTicket";
 
 const loadTicket = async (id) => {

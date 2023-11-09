@@ -1,4 +1,4 @@
-"use client";
+ 
 import EditEventForm from "@/components/updateEvent";
 import axios from "axios"; 
 
