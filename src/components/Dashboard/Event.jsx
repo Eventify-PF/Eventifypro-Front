@@ -14,7 +14,8 @@ const Event = ({ event }) => {
         "Content-Type": "application/json",
       },
     };
-    await fetch(`http://localhost:3001/events/${id}`, aux);
+    // await fetch(`http://localhost:3001/events/${id}`, aux);
+    await fetch(`https://server-eventifypro.onrender.com/events/${id}`, aux);
     setStatusEvent(statusEvent === "active" ? "inactive" : "active");
   };
 
