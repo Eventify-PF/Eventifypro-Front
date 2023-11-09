@@ -4,7 +4,7 @@ import Container from '../Container';
 import Logo from '../Logo';
 import MenuItem from './MenuItem';
 import Image from 'next/image';
-import { usePathname, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import Login from '../../app/api/auth/loginButton'
 import Logout from '../../app/api/auth/logoutButton'
 import { useUser } from '@auth0/nextjs-auth0/client';
@@ -18,12 +18,9 @@ import { searchUserByEmail } from '@/redux/action/userAction';
 
 
 import { useSelector } from 'react-redux';
-import { hideLoading } from '@/redux/action/cartAction';
 const Navbar = () => {
-  const pathname = usePathname()
 	const cartState = useSelector((state) => state.cartReducer);
-  const { loading, cartItems} = cartState;
-
+    const { numberCart} = cartState;
 	const router = useRouter();
   const { user, isLoading } = useUser();
   const dispatch = useDispatch();
@@ -56,11 +53,7 @@ const Navbar = () => {
     }
   }, [user, isLoading, dispatch]);
   
-  useEffect(() => {
-    dispatch(hideLoading());
-  }, [dispatch]);
-
-
+  
 	return ( 
 		<div className="fixed w-full bg-gray-800 z-10 shadow-sm">
 			<div className="py-4 border-b-[1px]">
@@ -80,12 +73,9 @@ const Navbar = () => {
 											width="25" 
 											alt="Logo" 
 										/>
-                      <span className='font-bold text-red-500 inline-block'>
-                        {loading ? '' : cartItems.reduce((a, c) => a + c.quantity, 0)}			    
-                      </span>
-                      {!loading && cartItems.length > 0 && pathname !== '/cart' && (
-                        <div className="caret"></div>
-                      )}
+										<span className='font-bold text-red-500 inline-block'>
+                  						    {numberCart}
+                						</span>
 									</div>
 									</div>
 								</div>
