@@ -1,5 +1,6 @@
 import Cookies from 'js-cookie';
-import React, { useState } from 'react';
+import { useState, useEffect } from 'react';
+ 
 
 const Ticket = ({ticket, addTicket}) => {
   const cookieName = `selectedQuantity_${ticket.id}`;
