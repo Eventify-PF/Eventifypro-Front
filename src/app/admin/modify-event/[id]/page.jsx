@@ -1,4 +1,5 @@
-import EditEventForm from "./updateEvent";
+"use client";
+import EditEventForm from "@/components/updateEvent";
 import axios from "axios"; 
 
 const loadEvent = async (id) => {
