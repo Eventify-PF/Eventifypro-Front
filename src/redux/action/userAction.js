@@ -43,9 +43,7 @@ export function postUser(userData) {
   export const searchUserByEmail = (email) => {
     return async (dispatch) => {
       try {
-        const { data } = await axios.get(`/users?email=${email}`, {
-          params: { email: email },
-        });
+        const { data } = await axios.get(`/users?email=${email}`);
         dispatch({ type: SEARCH_USER_BY_EMAIL, payload: data });
       } catch (error) {
         console.log(error);
@@ -53,7 +51,6 @@ export function postUser(userData) {
       }
     };
   };
-  
   
   
   
