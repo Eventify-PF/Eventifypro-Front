@@ -26,21 +26,25 @@ const Navbar = () => {
   const dispatch = useDispatch();
 
   const [showEmailVerificationAlert, setShowEmailVerificationAlert] = useState(false);
+  const [registrationRequested, setRegistrationRequested] = useState(false);
   
 
   useEffect(() => {
     if (user && !isLoading) {
-      
-      const userData = {
-        name: user.name,
-        email: user.email,
-        email_verified: user.email_verified,
-        
-      };
-      dispatch(postUser(userData));
+      if (!registrationRequested) {
+        // Evita solicitudes duplicadas
+        setRegistrationRequested(true);
+  
+        const userData = {
+          name: user.name,
+          email: user.email,
+          email_verified: user.email_verified,
+        };
+  
+        dispatch(postUser(userData));
+      }
     }
-  }, [user, isLoading, dispatch]);
-
+  }, [user, isLoading, dispatch, registrationRequested]);
   useEffect(() => {
     if (user && !isLoading && !user.email_verified) {
       setShowEmailVerificationAlert(true);
