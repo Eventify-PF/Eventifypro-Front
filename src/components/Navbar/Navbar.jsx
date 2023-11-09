@@ -4,7 +4,7 @@ import Container from '../Container';
 import Logo from '../Logo';
 import MenuItem from './MenuItem';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import Login from '../../app/api/auth/loginButton'
 import Logout from '../../app/api/auth/logoutButton'
 import { useUser } from '@auth0/nextjs-auth0/client';
@@ -13,17 +13,18 @@ import { postUser } from '@/redux/action/userAction';
 import { useEffect } from 'react';
 import { useState } from 'react';
 import { searchUserByEmail } from '@/redux/action/userAction';
-
-
-
-
 import { useSelector } from 'react-redux';
+import { hideLoading } from '@/redux/action/cartAction';
+
 const Navbar = () => {
+  const pathname = usePathname()
 	const cartState = useSelector((state) => state.cartReducer);
-    const { numberCart} = cartState;
+  const { loading, cartItems} = cartState;
+
 	const router = useRouter();
   const { user, isLoading } = useUser();
   const dispatch = useDispatch();
+
   const [showEmailVerificationAlert, setShowEmailVerificationAlert] = useState(false);
   const [registrationRequested, setRegistrationRequested] = useState(false);
   
@@ -57,6 +58,9 @@ const Navbar = () => {
     }
   }, [user, isLoading, dispatch]);
   
+  useEffect(() => {
+    dispatch(hideLoading());
+  }, [dispatch]);
   
 	return ( 
 		<div className="fixed w-full bg-gray-800 z-10 shadow-sm">
@@ -76,10 +80,13 @@ const Navbar = () => {
 											height='25' 
 											width="25" 
 											alt="Logo" 
-										/>
-										<span className='font-bold text-red-500 inline-block'>
-                  						    {numberCart}
-                						</span>
+                      />
+                      <span className='font-bold text-red-500 inline-block'>
+                      {loading ? '' : cartItems.reduce((a, c) => a + c.quantity, 0)}			    
+                    </span>
+                    {!loading && cartItems.length > 0 && pathname !== '/cart' && (
+                      <div className="caret"></div>
+                    )}
 									</div>
 									</div>
 								</div>

@@ -1,12 +1,18 @@
-"use client";
-import Container from "@/components/Container";
-import { formatearFecha } from "@/helpers";
-import Tickets from "@/components/Tickets/Tickets";
-import { useDispatch } from "react-redux";
-import { AddCart } from "@/redux/action/cartAction";
+'use client'
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import Container from './Container';
+import Tickets from './Tickets/Tickets';
+import { formatearFecha } from '@/helpers';
+import { AddCart, removeFromCart } from '@/redux/action/cartAction';
+import { toast } from "react-hot-toast";
+import { useRouter } from 'next/navigation';
 
-const EventDetailClient = ({ detailEvent }) => {
+const EventDetail = ({detailEvent}) => {
+  const router = useRouter()
   const { tickets } = detailEvent;
+  const ticketsState = useSelector((state) => state.cartReducer);
+  const {itemsPrice, loading} = ticketsState
   const dispatch = useDispatch();
   if (tickets.length === 0) {
     return (
@@ -15,16 +21,35 @@ const EventDetailClient = ({ detailEvent }) => {
       </div>
     );
   }
+
   const addTicket = (ticket) => {
-    const eventTikect = {
-      id: ticket.id,
-      title: detailEvent.title,
-      name: ticket.name,
-      image: detailEvent.image,
-      price: ticket.price,
-      quantity: ticket.quantity,
-    };
-    dispatch(AddCart(eventTikect));
+    if(ticket.quantity > 0){
+      const eventTikect = {
+        id: ticket.id,
+        title: detailEvent.title,
+        name: ticket.name,
+        image: detailEvent.image,
+        price: ticket.price,
+        stock: ticket.stock,
+        quantity: ticket.quantity,
+      };
+
+      dispatch(AddCart(eventTikect));
+      toast.success("Ticket added to the cart", {
+        style: {
+          border: '1px solid #713200',
+          padding: '16px',
+          color: '#713200',
+        },
+        iconTheme: {
+          primary: '#713200',
+          secondary: '#FFFAEE',
+        },
+      });
+    }else{
+      dispatch(removeFromCart(ticket.id))
+    }
+
   };
 
   return (
@@ -50,7 +75,8 @@ const EventDetailClient = ({ detailEvent }) => {
                 </h2>
                 <p className="mr-3 leading-relaxed mb-4 text-lg">
                   {detailEvent.location}
-                </p>
+
+                  </p>
                 <h2 className="text-lg title-font font-bold text-gray-950 tracking-widest">
                   Date
                 </h2>
@@ -62,10 +88,26 @@ const EventDetailClient = ({ detailEvent }) => {
             </div>
           </div>
         </div>
+
+        <div className='flex justify-center mt-10'>
+            <div className=' px-5 md:w-1/2 w-full'>
+                <h2 className='text-center mb-10 text-4xl font-bold'>Tickets</h2>
+                <div className='flex justify-center items-center'>
+                 {!loading && (
+                   <button
+                    type="button"
+                    onClick={() => router.push('/cart')}
+                    className='default-button'
+
+                    >View Cart: $ {itemsPrice}</button>
+                 )}
+                </div>
+            </div>
+        </div>
         <div className=" flex items-center justify-between ">
           <div className="container mx-auto px-3  sm:px-3 p-6">
             <div className=" w-full shadow rounded-lg overflow-x-auto  bg-white">
-              <Tickets tickets={tickets} addTicket={addTicket} />
+            <Tickets tickets={tickets} addTicket={addTicket}/>
             </div>
           </div>
         </div>
@@ -74,4 +116,4 @@ const EventDetailClient = ({ detailEvent }) => {
   );
 };
 
-export default EventDetailClient;
+export default EventDetail;

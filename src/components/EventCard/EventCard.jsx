@@ -20,12 +20,12 @@ const EventCard = ({event}) => {
 				</div>
 
 				<div className="p-6 pt-3">
-					<button onClick={() => router.push(`/event/${event.id}`)} 
-						className=" w-full select-none rounded-lg bg-gray-700 py-2.5 px-6 text-center align-middle font-sans text-xs font-bold uppercase text-white shadow-md shadow-pink-50/70 transition-all hover:shadow-lg hover:shadow-pink-200/50 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none" type="button"
-						>
-						See Event
-					</button>
-				</div>
+                    <Link
+                        href={`/event/${event.id}`}
+                        className=" w-full select-none rounded-lg bg-gray-700 py-2.5 px-6 text-center align-middle font-sans text-xs font-bold uppercase text-white shadow-md shadow-pink-50/70 transition-all hover:shadow-lg hover:shadow-pink-200/50 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none" type="button">
+                        See Event
+                    </Link>
+                </div>
 			</div>
 		</div>
 	);
