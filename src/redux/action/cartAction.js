@@ -1,51 +1,36 @@
+import Cookies from "js-cookie";
 import { 
-    INCREASE_QUANTITY,
-    DECREASE_QUANTITY, 
-    GET_NUMBER_CART,
-    ADD_CART,
-    UPDATE_CART,
-    DELETE_CART
+     
+    ADD_TO_CART ,
+    REMOVE_FROM_CART,
+    HIDE_LOADING,
 } from "../action-type/cartConstans";
 
-export function GetNumberCart() {
-    return {
-      type: GET_NUMBER_CART,
-    };
-}
+const generateCookieName = (ticketId) => `selectedQuantity_${ticketId}`;
+
+const setStoredQuantity = (ticketId, quantity) => {
+  const cookieName = generateCookieName(ticketId);
+  Cookies.set(cookieName, quantity);
+};
 
 export function AddCart(payload) {
+  const { id: ticketId, quantity } = payload;
+    setStoredQuantity(ticketId, quantity);
     return {
-      type: ADD_CART,
+      type: ADD_TO_CART,
       payload,
     };
 }
 
-export function UpdateCart(payload) {
-    return {
-      type: UPDATE_CART,
-      payload,
-    };
+export function removeFromCart(payload) {
+  const cookieName = `selectedQuantity_${payload}`;
+  Cookies.remove(cookieName);
+  return {
+    type: REMOVE_FROM_CART,
+    payload,
+  };
 }
 
-export function IncreaseQuantity(payload) {
-    return {
-      type: INCREASE_QUANTITY,
-      payload,
-    };
-  }
-
-
-export function DeleteCart(payload) {
-    return {
-      type: DELETE_CART,
-      payload,
-    };
-}
-
-
-export function DecreaseQuantity(payload) {
-    return {
-      type: DECREASE_QUANTITY,
-      payload,
-    };
-}
+export const hideLoading = () => ({
+  type: HIDE_LOADING,
+});
