@@ -1,54 +1,78 @@
-import Cookies from 'js-cookie';
 import { 
-    ADD_TO_CART ,
-    REMOVE_FROM_CART,
-    HIDE_LOADING,
+  GET_NUMBER_CART,
+  ADD_CART,
+  DECREASE_QUANTITY,
+  INCREASE_QUANTITY,
+  DELETE_CART
  } from "../action-type/cartConstans";
 
- const getInitialStateFromLocalStorage = () => {
-    if (typeof window !== 'undefined') {
-      const storedCart = localStorage.getItem('cart');
-      return storedCart ? { ...JSON.parse(storedCart), loading: true } : { loading: true, cartItems: [] };
-    } else {
-      return { loading: true, cartItems: [] };
-    }
-  };
-
-  const initialState = getInitialStateFromLocalStorage();
-const addDecimals = (num) => {
-    return (Math.round(num * 100) / 100).toFixed(2); // 12.3456 to 12.35
-};
+ const initialState ={
+  numberCart: 0,
+  carts: [],
+}
 
 const cartReducer = (state = initialState , action) => {
     switch(action.type){
-        case ADD_TO_CART:
-            const item = action.payload;
-            const existItem = state.cartItems.find((x) => x.id === item.id);
-            if (existItem) {
-                state.cartItems = state.cartItems.map((x) =>x.id === existItem.id ? item : x);
+        case GET_NUMBER_CART:
+            return {
+                ...state,
+            };
+        case ADD_CART:
+            if(state.numberCart === 0){
+                const cart = {
+                    id: action.payload.id,
+                    title: action.payload.title,
+                    name: action.payload.name,
+                    image: action.payload.image,
+                    price: action.payload.price,
+                    quantity : action.payload.quantity,
+                }
+                state.carts.push(cart);
             }else{
-                state.cartItems = [...state.cartItems, item];
+                let check = false;
+                state.carts.map((item, key) => {
+                    if (item.id === action.payload.id) {
+                      state.carts[key].quantity++;
+                      check = true;
+                    }
+                });
+                if (!check) {
+                    let _cart = {
+                        id: action.payload.id,
+                        title: action.payload.title,
+                        name: action.payload.name,
+                        image: action.payload.image,
+                        price: action.payload.price,
+                        quantity : action.payload.quantity,
+                    };
+                    state.carts.push(_cart);
+                }
             }
-
-            state.itemsPrice = addDecimals(state.cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0));
-            state.totalPrice = addDecimals(Number(state.itemsPrice) + Number(state.shippingPrice));
-            localStorage.setItem('cart', JSON.stringify(state));
-            return { ...state };
-
-        case REMOVE_FROM_CART:
-            const itemIdToRemove = action.payload;
-            state.cartItems = state.cartItems.filter((x) => x.id !== itemIdToRemove);
-            state.itemsPrice = addDecimals(state.cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0));
-            state.totalPrice = addDecimals(Number(state.itemsPrice) + Number(state.shippingPrice));
-            localStorage.setItem('cart', JSON.stringify(state));
-            return { 
-                ...state
+            return {
+                ...state,
+                numberCart: state.numberCart + 1,
+            };
+        case INCREASE_QUANTITY:
+            state.carts[action.payload].quantity++;
+          
+            return {
+                ...state,
+            };
+        case DECREASE_QUANTITY:
+            let quantity = state.carts[action.payload].quantity;
+            if (quantity > 1) {
+                  state.carts[action.payload].quantity--;
             }
-            
-        case HIDE_LOADING:
-            state.loading = false;
-            return { ...state };
-        
+                return {
+                  ...state,
+                };
+        case DELETE_CART:
+            let quantityTickets = state.carts[action.payload].count;
+            return {
+                ...state,
+                numberCart: state.numberCart - quantityTickets,
+                carts: state.carts.filter((item) => {return item.id != state.carts[action.payload].id;}),
+            };
         default:
           return state; 
     }
