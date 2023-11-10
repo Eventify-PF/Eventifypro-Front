@@ -1,14 +1,14 @@
 "use client"
 import { AddCart, removeFromCart } from "@/redux/action/cartAction";
 import { useSelector, useDispatch } from 'react-redux';
-import { useRouter } from 'next/navigation'
 import Container from "@/components/Container";
 import Link from "next/link";
+import axios from "axios";
+
 const CartPage = () => {
-  const router = useRouter()
   const dispatch = useDispatch();
   const ticketsState = useSelector((state) => state.cartReducer);
-  const {cartItems, itemsPrice, loading} = ticketsState
+  const {cartItems, itemsPrice, loading} = ticketsState;
 
   const removeFromCartHandler = (id) => {
     dispatch(removeFromCart(id))
@@ -16,6 +16,27 @@ const CartPage = () => {
   const addToCartHandler = async (ticket, quantity) => {
     dispatch(AddCart({ ...ticket, quantity }))
   }
+
+  const handleFinish = async () => {
+    console.log(cartItems)
+  let listCart = cartItems.map((item) => {
+    return {
+      id:item.id,
+      name: item.name,
+      image: item.image,
+      price: item.price,
+      quantity: item.quantity,
+    }
+  });
+
+    try {
+  const response  = await axios.post('http://localhost:3001/mercadoPago',listCart);
+  const data = response.data;
+  window.location.href = data;
+  } catch (error) {
+    return error;
+  }
+ }
   return (
     <>
       <h1 className="mb-10 text-center text-4xl font-bold my-10">Tickets</h1>
@@ -85,7 +106,7 @@ const CartPage = () => {
                 </li>
                 <li>
                   <button
-                    onClick={() => router.push('/shipping')}
+                    onClick={handleFinish}
                     className="bg-slate-500 px-5 py-2 rounded-lg uppercase text-white font-bold text-sm w-full"
                   >
                     Proceed to checkout
