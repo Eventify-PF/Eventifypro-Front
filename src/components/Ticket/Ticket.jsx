@@ -1,21 +1,11 @@
-import Cookies from 'js-cookie';
-import { useState, useEffect } from 'react';
- 
-
+import { useState } from 'react';
 const Ticket = ({ticket, addTicket}) => {
-  const cookieName = `selectedQuantity_${ticket.id}`;
-  const storedQuantity = Cookies.get(cookieName) || '0';
-  const [selectedQuantity, setSelectedQuantity] = useState(storedQuantity);
-
+  const [selectedQuantity, setSelectedQuantity] = useState(0);
   const handleQuantityChange = (event) => {
     const quantity = parseInt(event.target.value, 10);
     setSelectedQuantity(quantity);
     addTicket({ ...ticket, quantity});
   };
-
-  useEffect(() => {
-    Cookies.set(cookieName, selectedQuantity, { expires: 7 });
-  }, [selectedQuantity, cookieName]);
     
   return (
     <div className="py-4 border-b border-gray-200 flex items-center justify-between p-6">

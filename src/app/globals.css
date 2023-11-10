@@ -2,3 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
+
+.new-carcater {
+    position: fixed;
+    bottom: 6rem;
+    right: 0;
+  }
+  
+  .new-carcater img {
+    width: 2rem;
+    
+}
+
