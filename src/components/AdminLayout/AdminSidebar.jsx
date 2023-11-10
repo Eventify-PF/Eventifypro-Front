@@ -5,7 +5,7 @@ const AdminSidebar = () => {
 	  <div className="relative flex-1 flex flex-col min-h-0 border-r border-gray-200 bg-white pt-0">
       <div className="flex-1 flex flex-col pt-5 pb-4 overflow-y-auto">
         <div className="flex-1 px-3 bg-white divide-y space-y-1">
-          <ul className="space-y-2 pt-2">
+         <ul className="space-y-2 pt-10">
           
             <li>
               <Link href="/admin" className="text-base text-gray-900 font-normal rounded-lg flex items-center p-2 hover:bg-gray-100 group">

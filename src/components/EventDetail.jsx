@@ -3,16 +3,18 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Container from './Container';
 import Tickets from './Tickets/Tickets';
-import { formatearFecha } from '@/helpers';
+import { formatDateToLocal } from '@/helpers';
 import { AddCart, removeFromCart } from '@/redux/action/cartAction';
 import { toast } from "react-hot-toast";
-import { useRouter } from 'next/navigation';
+import Image from 'next/image';
+import { usePathname, useRouter } from 'next/navigation';
 
 const EventDetail = ({detailEvent}) => {
   const router = useRouter()
+  const pathname = usePathname()
   const { tickets } = detailEvent;
   const ticketsState = useSelector((state) => state.cartReducer);
-  const {itemsPrice, loading} = ticketsState
+  const {cartItems, itemsPrice, loading} = ticketsState
   const dispatch = useDispatch();
   if (tickets.length === 0) {
     return (
@@ -81,7 +83,7 @@ const EventDetail = ({detailEvent}) => {
                   Date
                 </h2>
                 <span className=" text-gray-900 h-10 rounded px-1 py-1 text-lg  cursor-pointer">
-                  {formatearFecha(detailEvent.date)}
+                  {formatDateToLocal(detailEvent.date)}
                 </span>
               </div>
               <p className="leading-relaxed">{detailEvent.description}</p>
@@ -89,6 +91,7 @@ const EventDetail = ({detailEvent}) => {
           </div>
         </div>
 
+        
         <div className='flex justify-center mt-10'>
             <div className=' px-5 md:w-1/2 w-full'>
                 <h2 className='text-center mb-10 text-4xl font-bold'>Tickets</h2>
@@ -110,6 +113,28 @@ const EventDetail = ({detailEvent}) => {
             <Tickets tickets={tickets} addTicket={addTicket}/>
             </div>
           </div>
+        </div>
+      </div>
+      <div className='new-carcater'>
+        <div className="flex items-center justify-between">
+            <div className="text-gray-600 focus:outline-none mx-7 py-4 px-1 sm:mx-0">
+              <div className='flex flex-row gap-2'>
+                <Image
+                  onClick={() => router.push('/cart')}
+                  src="/images/cart.png" 
+                  height='30' 
+                  width="30" 
+                  alt="Logo" 
+                />
+                <span className='font-bold text-red-500 inline-block'>
+                  {loading ? '' : cartItems.reduce((a, c) => a + c.quantity, 0)}
+                </span>
+
+                  {!loading && cartItems.length > 0 && pathname !== '/cart' && (
+                    <div className="caret"></div>
+                  )}
+              </div>
+            </div>
         </div>
       </div>
     </Container>

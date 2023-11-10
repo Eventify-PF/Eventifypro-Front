@@ -13,15 +13,8 @@ import { postUser } from '@/redux/action/userAction';
 import { useEffect } from 'react';
 import { useState } from 'react';
 import { searchUserByEmail } from '@/redux/action/userAction';
-import { useSelector } from 'react-redux';
-import { hideLoading } from '@/redux/action/cartAction';
 
 const Navbar = () => {
-  const pathname = usePathname()
-	const cartState = useSelector((state) => state.cartReducer);
-  const { loading, cartItems} = cartState;
-
-	const router = useRouter();
   const { user, isLoading } = useUser();
   const dispatch = useDispatch();
 
@@ -58,9 +51,7 @@ const Navbar = () => {
     }
   }, [user, isLoading, dispatch]);
   
-  useEffect(() => {
-    dispatch(hideLoading());
-  }, [dispatch]);
+  
   
 	return ( 
 		<div className="fixed w-full bg-gray-800 z-10 shadow-sm">
@@ -71,25 +62,6 @@ const Navbar = () => {
 						<MenuItem/>
 						<div className="relative">
 							<div className="mt-2 sm:mt-0 sm:flex md:order-2">
-								<div className="flex items-center justify-between">
-									<div className="text-gray-600 focus:outline-none mx-7 py-1.6 px-6 sm:mx-0">
-									<div className='flex flex-row gap-2'>
-										<Image
-											onClick={() => router.push('/cart')}
-											src="/images/carrito.png" 
-											height='25' 
-											width="25" 
-											alt="Logo" 
-                      />
-                      <span className='font-bold text-red-500 inline-block'>
-                      {loading ? '' : cartItems.reduce((a, c) => a + c.quantity, 0)}			    
-                    </span>
-                    {!loading && cartItems.length > 0 && pathname !== '/cart' && (
-                      <div className="caret"></div>
-                    )}
-									</div>
-									</div>
-								</div>
 								{isLoading ? (
                     <div>Cargando...</div>
                   ) : user ? (
