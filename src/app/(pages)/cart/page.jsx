@@ -43,7 +43,7 @@ const CartPage = () => {
       <h1 className="mb-10 text-center text-4xl font-bold my-10">Tickets</h1>
       <Container>
         <div className="text-center font-bold">
-          No Tickets in the Cart. <Link href="https://server-eventifypro.onrender.com/event" as="font">Go shopping</Link>
+          No Tickets in the Cart. <Link href="/event">Go shopping</Link>
         </div>
       ):(
 
@@ -114,7 +114,7 @@ const CartPage = () => {
             </div>
           </div>
         </div>
-      )}
+      )
 
     </Container>
     </>
