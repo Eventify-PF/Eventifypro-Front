@@ -46,7 +46,7 @@ const CartPage = () => {
         <div>Loading ....</div>
       ): cartItems.length === 0 ? (
         <div className="text-center font-bold">
-          No Tickets in the Cart. <Link href="https://server-eventifypro.onrender.com/event">Go shopping</Link>
+          No Tickets in the Cart. <Link href="https://server-eventifypro.onrender.com/event" as="font">Go shopping</Link>
         </div>
       ):(
 
