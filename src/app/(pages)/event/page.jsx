@@ -1,5 +1,5 @@
-'use client';
 
+'use client';
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
 import Container from "@/components/Container";
@@ -9,12 +9,7 @@ import SearchBar from "@/components/SearchBar/SearchBar";
 import { fetchEvents, searchEvent, filterEventsByType, filterEventsByDate, filterEventsByTypeAndDate } from "@/redux/action/eventActions";
 import { getAllEventTypes } from "@/redux/action/eventTypeActions";
 import Pagination from "@mui/material/Pagination";
-import Carrusel from "@/components/Carrusel/Carrusel";
-import {GiTicket} from 'react-icons/gi';
-import {IoMdMusicalNote} from 'react-icons/io';
-import {FaGuitar, FaTheaterMasks} from 'react-icons/fa';
-import {GiSaxophone, GiGrandPiano} from 'react-icons/gi';
-import {BiSolidCameraMovie} from 'react-icons/bi'; 
+ 
 
 const Events = () => {
   const dispatch  = useDispatch();
@@ -60,7 +55,7 @@ const Events = () => {
   };
 
   const handleFilterEventDate = (event) => {
-    const selectedDate = event.target.value + "00:00:00.000Z";
+    const selectedDate = event.target.value + "T00:00:00.000Z";
       dispatch(filterEventsByDate(selectedDate));
     dispatch(setCurrentPage(1));
   }; 
@@ -76,15 +71,9 @@ const Events = () => {
 
   return (
     <Container>
-      <div className="bg-gray-800 w-full shadow-xl rounded-lg bg-opacity-70">
-      <Carrusel/>
-    </div>
       <div className="py-8">
-      <div className="flex mb-11 opacity-20">
-          <GiTicket className="w-32 h-32 justify-center"/><IoMdMusicalNote className="w-32 h-32 justify-center"/><GiTicket className="w-32 h-32 justify-center"/>
-          <FaGuitar className="w-32 h-32 justify-center"/><GiTicket className="w-32 h-32 justify-center"/><GiSaxophone className="w-32 h-32 justify-center"/>
-          <GiTicket className="w-32 h-32 justify-center"/><BiSolidCameraMovie className="w-32 h-32 justify-center"/><GiTicket className="w-32 h-32 justify-center"/>
-          <GiGrandPiano className="w-32 h-32 justify-center"/><GiTicket className="w-32 h-32 justify-center"/><FaTheaterMasks className="w-32 h-32 justify-center"/>
+        <div className="p-4">
+          <h2 className="text-3xl font-bold text-center text-gray-800 leading-tight">All Events</h2>
         </div>
         <div className="my-2 flex sm:flex-row flex-col justify-center">
           <div className="flex flex-row mb-1 sm:mb-0">
