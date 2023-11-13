@@ -30,8 +30,10 @@ const CartPage = () => {
   });
 
     try {
-   const response  = await axios.post(' https://server-eventifypro.onrender.com/mercadoPago',listCart);
-  // const response  = await axios.post('http://localhost:3001/mercadoPago',listCart);
+ 
+  //const response  = await axios.post('http://localhost:3001/mercadoPago',listCart);
+  const response  = await axios.post('https://server-eventifypro.onrender.com/mercadoPago',listCart);
+ 
   const data = response.data;
   window.location.href = data;
   } catch (error) {
@@ -112,7 +114,6 @@ const CartPage = () => {
             </div>
           </div>
         </div>
-      
 
     </Container>
     </>
