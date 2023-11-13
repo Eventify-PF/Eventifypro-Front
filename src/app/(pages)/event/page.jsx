@@ -60,10 +60,10 @@ const Events = () => {
   };
 
   const handleFilterEventDate = (event) => {
-    if (event === null){
-      dispatch(fetchEvents())
-    } else {
+     
       const selectedDate = event.target.value + "T00:00:00.000Z";
+    if(!selectedDate){
+      dispatch(fetchEvents())
     }
     console.log(selectedDate)
       dispatch(filterEventsByDate(selectedDate));
