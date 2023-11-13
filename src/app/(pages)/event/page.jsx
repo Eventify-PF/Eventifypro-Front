@@ -10,6 +10,7 @@ import SearchBar from "@/components/SearchBar/SearchBar";
 import { fetchEvents, searchEvent, filterEventsByType, filterEventsByDate, filterEventsByTypeAndDate } from "@/redux/action/eventActions";
 import { getAllEventTypes } from "@/redux/action/eventTypeActions";
 import Pagination from "@mui/material/Pagination";
+import Carrusel from "@/components/Carrusel/Carrusel";
  
 
 const Events = () => {
@@ -72,6 +73,9 @@ const Events = () => {
 
   return (
     <Container>
+      <div className="bg-gray-800 w-full shadow-xl rounded-lg bg-opacity-70">
+      <Carrusel/>
+    </div>
       <div className="py-8">
         <div className="p-4">
           <h2 className="text-3xl font-bold text-center text-gray-800 leading-tight">All Events</h2>
