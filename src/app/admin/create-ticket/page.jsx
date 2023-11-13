@@ -3,12 +3,12 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
-import { getEvents } from "../../../redux/action/eventActions";
-import validateTicket from "../../../utils/validateTicket";
-import { createTicket } from "../../../redux/action/ticketActions";
+import { fetchEvents } from "@/redux/action/eventActions";
+import validateTicket from "@/utils/validateTicket";
+import { createTicket } from "@/redux/action/ticketActions";
 
 const TicketPage = () => {
-  const allEvents = useSelector((state) => state.eventReducer.allEvents);
+  const allEvents = useSelector((state) => state.eventReducer.events);
   const dispatch = useDispatch();
 
   const [ticket, setTicket] = useState({
@@ -31,6 +31,10 @@ const TicketPage = () => {
     event: "",
   });
 
+  useEffect(() => {
+    dispatch(fetchEvents());
+  }, [dispatch]);
+  
   const handleChange = (event) => {
     setTicket({
       ...ticket,
@@ -41,9 +45,9 @@ const TicketPage = () => {
         ...ticket,
         [event.target.name]: event.target.value,
       })
-    );
-  };
-
+      );
+    };
+    
   const handleDisabled = () => {
     for (let error in errors) {
       if (errors[error] !== "") return true;
@@ -70,9 +74,6 @@ const TicketPage = () => {
     }
   };
 
-  useEffect(() => {
-    dispatch(getEvents());
-  }, [dispatch]);
 
   return (
     <div className="flex justify-center items-center h-screen mt-12">
