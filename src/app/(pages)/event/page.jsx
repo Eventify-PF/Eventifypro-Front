@@ -86,9 +86,6 @@ const Events = () => {
           <GiTicket className="w-32 h-32 justify-center"/><BiSolidCameraMovie className="w-32 h-32 justify-center"/><GiTicket className="w-32 h-32 justify-center"/>
           <GiGrandPiano className="w-32 h-32 justify-center"/><GiTicket className="w-32 h-32 justify-center"/><FaTheaterMasks className="w-32 h-32 justify-center"/>
         </div>
-        <div className="p-4">
-          <h2 className="text-3xl font-bold text-center text-gray-800 leading-tight">All Events</h2>
-        </div>
         <div className="my-2 flex sm:flex-row flex-col justify-center">
           <div className="flex flex-row mb-1 sm:mb-0">
             <div className="relative max-w-sm mt-2 sm:mt-0 sm:ml-2">
