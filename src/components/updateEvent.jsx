@@ -1,12 +1,13 @@
 "use client";
 
+import { formatDateToLocal } from "@/helpers";
 import { updateEvent } from "@/redux/action/eventActions";
 import { getAllEventTypes } from "@/redux/action/eventTypeActions";
 import validateForm from "@/utils/validateForm";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-export default function EditEventForm ({ detailEvent }) {
+export default function EditEventForm({ detailEvent }) {
   const dispatch = useDispatch();
   const [errors, setErrors] = useState({});
   const [message, setMessage] = useState("");
@@ -29,9 +30,6 @@ export default function EditEventForm ({ detailEvent }) {
     eventType: detailEvent.eventType,
   });
 
-  console.log("ANTES: ", detailEvent.eventType);
-  console.log("DESPUES: ", event);
-
   const handleChange = (e) => {
     setEvent({ ...event, [e.target.name]: e.target.value });
     setErrors(validateForm({ ...event, [e.target.name]: e.target.value }));
@@ -45,8 +43,8 @@ export default function EditEventForm ({ detailEvent }) {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     try {
-      console.log(event);
       dispatch(updateEvent(event));
       setMessage("You updated a new event!");
       setEvent({
@@ -166,5 +164,4 @@ export default function EditEventForm ({ detailEvent }) {
       </form>
     </div>
   );
-};
-
+}
