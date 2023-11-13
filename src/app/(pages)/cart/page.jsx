@@ -8,7 +8,7 @@ import axios from "axios";
 const CartPage = () => {
   const dispatch = useDispatch();
   const ticketsState = useSelector((state) => state.cartReducer);
-  const {cartItems, itemsPrice, loading} = ticketsState;
+  const {cartItems, itemsPrice} = ticketsState;
 
   const removeFromCartHandler = (id) => {
     dispatch(removeFromCart(id))
@@ -30,7 +30,8 @@ const CartPage = () => {
   });
 
     try {
-  const response  = await axios.post('http://localhost:3001/mercadoPago',listCart);
+   const response  = await axios.post(' https://server-eventifypro.onrender.com/mercadoPago',listCart);
+  // const response  = await axios.post('http://localhost:3001/mercadoPago',listCart);
   const data = response.data;
   window.location.href = data;
   } catch (error) {
@@ -44,8 +45,6 @@ const CartPage = () => {
         <div className="text-center font-bold">
           No Tickets in the Cart. <Link href="/event">Go shopping</Link>
         </div>
-      ):(
-
         <div className="grid md:grid-cols-4 md:gap-5  bg-white ">
           <div className="overflow-x-auto md:col-span-3">
             <table className="min-w-full">
@@ -113,7 +112,7 @@ const CartPage = () => {
             </div>
           </div>
         </div>
-      )}
+      
 
     </Container>
     </>
