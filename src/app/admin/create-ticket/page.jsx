@@ -18,7 +18,7 @@ const TicketPage = () => {
     description: "",
     image: "",
     state: "active",
-    event: "",
+    event: "", // Cambiado a un string para almacenar el ID del evento seleccionado
   });
 
   const [errors, setErrors] = useState({
@@ -30,6 +30,9 @@ const TicketPage = () => {
     state: "",
     event: "",
   });
+
+  // Nuevo estado para almacenar el ID del evento seleccionado
+  const [selectedEvent, setSelectedEvent] = useState("");
 
   const handleChange = (event) => {
     setTicket({
@@ -44,14 +47,15 @@ const TicketPage = () => {
     );
   };
 
+  
   const handleDisabled = () => {
     for (let error in errors) {
       if (errors[error] !== "") return true;
     }
     return false;
   };
-
-  const handleSubmit = (event) => {
+  
+const handleSubmit = (event) => {
     console.log(event + "Error");
     event.preventDefault();
     try {
@@ -69,7 +73,7 @@ const TicketPage = () => {
       alert("There is a problem:", error);
     }
   };
-
+  // Utilizar este nuevo efecto para cargar eventos cuando el componente se monte
   useEffect(() => {
     dispatch(getEvents());
   }, [dispatch]);
@@ -153,38 +157,41 @@ const TicketPage = () => {
             <p className="text-red-500 text-xs italic">{errors.image}</p>
           )}
 
-          <label className="block text-gray-700 text-sm font-bold mb-2">
-            Event
-          </label>
-          <select
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            type="text"
-            name="event"
-            value={ticket.event}
-            onChange={handleChange}
-          >
-            <option value="">Select an Event</option>
-            {allEvents?.map((event) => (
-              <option key={event.id} value={event.id}>
-                {event.title}
-              </option>
-            ))}
-          </select>
-          {errors.event && (
-            <p className="text-red-500 text-xs italic">{errors.event}</p>
-          )}
+         <label className="block text-gray-700 text-sm font-bold mb-2">
+          Event
+        </label>
+        <select
+          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          type="text"
+          name="event"
+          value={ticket.event}
+          onChange={(event) => {
+            handleChange(event);
+            setSelectedEvent(event.target.value);
+          }}
+        >
+          <option value="">Select an Event</option>
+          {allEvents?.map((event) => (
+            <option key={event.id} value={event.id}>
+              {event.title}
+            </option>
+          ))}
+        </select>
+        {errors.event && (
+          <p className="text-red-500 text-xs italic">{errors.event}</p>
+        )}
 
-          <button
-            type="submit"
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-            disabled={handleDisabled()}
-          >
-            Add Ticket
-          </button>
-        </div>
-      </form>
-    </div>
-  );
+        <button
+          type="submit"
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+          disabled={handleDisabled()}
+        >
+          Add Ticket
+        </button>
+      </div>
+    </form>
+  </div>
+);
 };
 
 export default TicketPage;
