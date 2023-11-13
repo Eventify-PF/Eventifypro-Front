@@ -60,14 +60,18 @@ const Events = () => {
   };
 
   const handleFilterEventDate = (event) => {
-     if(event.target.value === null){
-       dispatch(fetchEvents())
-     }else {
-       const selectedDate = event.target.value + "T00:00:00.000Z";
-       dispatch(filterEventsByDate(selectedDate));
-     }   
+    const selectedDate = event.target.value;
+  
+    if (!selectedDate === null) {
+      dispatch(fetchEvents());
+    } else {
+      const formattedDate = selectedDate + "T00:00:00.000Z";
+      dispatch(filterEventsByDate(formattedDate));
+    }
+  
     dispatch(setCurrentPage(1));
-  }; 
+  };
+   
 
   const totalEvents = events.length;
   const totalPages = Math.ceil(totalEvents / eventsPerPage);
