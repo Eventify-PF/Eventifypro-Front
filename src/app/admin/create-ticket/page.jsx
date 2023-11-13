@@ -46,7 +46,24 @@ const TicketPage = () => {
       })
     );
   };
-
+const handleSubmit = (event) => {
+    console.log(event + "Error");
+    event.preventDefault();
+    try {
+      dispatch(createTicket(ticket));
+      setTicket({
+        name: "",
+        price: "",
+        stock: "",
+        description: "",
+        image: "",
+        state: "active",
+        event: "",
+      });
+    } catch (error) {
+      alert("There is a problem:", error);
+    }
+  };
   // Utilizar este nuevo efecto para cargar eventos cuando el componente se monte
   useEffect(() => {
     dispatch(getEvents());
