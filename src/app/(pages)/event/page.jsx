@@ -59,19 +59,21 @@ const Events = () => {
     dispatch(setCurrentPage(1));
   };
 
-  const handleFilterEventDate = (event) => {
-    const selectedDate = event.target.value;
-  
-    if (!selectedDate === null) {
-      dispatch(fetchEvents());
-    } else {
-      const formattedDate = selectedDate + "T00:00:00.000Z";
-      dispatch(filterEventsByDate(formattedDate));
-    }
-  
-    dispatch(setCurrentPage(1));
-  };
-   
+const handleFilterEventDate = (event) => {
+  const selectedDate = event.target.value;
+
+  if (!selectedDate || selectedDate.trim() === "") {
+    
+    dispatch(fetchEvents());
+  } else {
+    
+    const formattedDate = selectedDate + "T00:00:00.000Z";
+    dispatch(filterEventsByDate(formattedDate));
+  }
+
+  dispatch(setCurrentPage(1));
+};
+ 
 
   const totalEvents = events.length;
   const totalPages = Math.ceil(totalEvents / eventsPerPage);
