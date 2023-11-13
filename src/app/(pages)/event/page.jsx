@@ -11,7 +11,11 @@ import { fetchEvents, searchEvent, filterEventsByType, filterEventsByDate, filte
 import { getAllEventTypes } from "@/redux/action/eventTypeActions";
 import Pagination from "@mui/material/Pagination";
 import Carrusel from "@/components/Carrusel/Carrusel";
- 
+import {GiTicket} from 'react-icons/gi';
+import {IoMdMusicalNote} from 'react-icons/io';
+import {FaGuitar, FaTheaterMasks} from 'react-icons/fa';
+import {GiSaxophone, GiGrandPiano} from 'react-icons/gi';
+import {BiSolidCameraMovie} from 'react-icons/bi'; 
 
 const Events = () => {
   const dispatch  = useDispatch();
@@ -77,6 +81,12 @@ const Events = () => {
       <Carrusel/>
     </div>
       <div className="py-8">
+      <div className="flex mb-11 opacity-20">
+          <GiTicket className="w-32 h-32 justify-center"/><IoMdMusicalNote className="w-32 h-32 justify-center"/><GiTicket className="w-32 h-32 justify-center"/>
+          <FaGuitar className="w-32 h-32 justify-center"/><GiTicket className="w-32 h-32 justify-center"/><GiSaxophone className="w-32 h-32 justify-center"/>
+          <GiTicket className="w-32 h-32 justify-center"/><BiSolidCameraMovie className="w-32 h-32 justify-center"/><GiTicket className="w-32 h-32 justify-center"/>
+          <GiGrandPiano className="w-32 h-32 justify-center"/><GiTicket className="w-32 h-32 justify-center"/><FaTheaterMasks className="w-32 h-32 justify-center"/>
+        </div>
         <div className="p-4">
           <h2 className="text-3xl font-bold text-center text-gray-800 leading-tight">All Events</h2>
         </div>
