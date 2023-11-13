@@ -60,7 +60,11 @@ const Events = () => {
   };
 
   const handleFilterEventDate = (event) => {
-    const selectedDate = event.target.value + "T00:00:00.000Z";
+    if (event === null){
+      dispatch(fetchEvents())
+    } else {
+      const selectedDate = event.target.value + "T00:00:00.000Z";
+    }
     console.log(selectedDate)
       dispatch(filterEventsByDate(selectedDate));
     dispatch(setCurrentPage(1));
