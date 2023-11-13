@@ -9,6 +9,8 @@ const CartPage = () => {
   const dispatch = useDispatch();
   const ticketsState = useSelector((state) => state.cartReducer);
   const {cartItems, itemsPrice} = ticketsState;
+  console.log(cartItems)
+  console.log(itemsPrice)
 
   const removeFromCartHandler = (id) => {
     dispatch(removeFromCart(id))
@@ -33,6 +35,7 @@ const CartPage = () => {
   //  const response  = await axios.post('https://server-eventifypro.onrender.com/mercadoPago',listCart);
     const response  = await axios.post('http://localhost:3001/mercadoPago',listCart);
   const data = response.data;
+  console.log(data)
   window.location.href = data;
   } catch (error) {
     return error;
