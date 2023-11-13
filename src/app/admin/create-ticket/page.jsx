@@ -8,7 +8,7 @@ import validateTicket from "@/utils/validateTicket";
 import { createTicket } from "@/redux/action/ticketActions";
 
 const TicketPage = () => {
-  const allEvents = useSelector((state) => state.eventReducer.allEvents);
+  const allEvents = useSelector((state) => state.eventReducer.events);
   const dispatch = useDispatch();
 
   const [ticket, setTicket] = useState({
