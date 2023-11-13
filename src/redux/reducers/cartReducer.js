@@ -8,7 +8,6 @@ import {
 const initialState = {
   loading: true, 
   cartItems: [],
-  cartItemsCopy: [],
 };
 const addDecimals = (num) => {
   return (Math.round(num * 100) / 100).toFixed(2); // 12.3456 to 12.35

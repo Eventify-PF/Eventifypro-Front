@@ -44,9 +44,9 @@ const CartPage = () => {
     <>
       <h1 className="mb-10 text-center text-4xl font-bold my-10">Tickets</h1>
       <Container>
-        {/* <div className="text-center font-bold"> */}
-          {/* No Tickets in the Cart. <Link href="/event">Go shopping</Link>
-        </div> */}
+        <div className="text-center font-bold">
+          No Tickets in the Cart. <Link href="/event">Go shopping</Link>
+        </div>
         <div className="grid md:grid-cols-4 md:gap-5  bg-white ">
           <div className="overflow-x-auto md:col-span-3">
             <table className="min-w-full">
