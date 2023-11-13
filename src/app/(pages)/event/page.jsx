@@ -60,7 +60,7 @@ const Events = () => {
   };
 
   const handleFilterEventDate = (event) => {
-    const selectedDate = event.target.value + "T00:00:00.000Z";
+    const selectedDate = event.target.value + "00:00:00.000Z";
       dispatch(filterEventsByDate(selectedDate));
     dispatch(setCurrentPage(1));
   }; 
