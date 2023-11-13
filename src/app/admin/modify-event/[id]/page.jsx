@@ -3,8 +3,8 @@ import axios from "axios";
 
 const loadEvent = async (id) => {
   try {
-    const response = await axios.get(`http://localhost:3001/events/${id}`);
-    // const response = await axios.get(`https://server-eventifypro.onrender.com/events/${id}`);
+    //const response = await axios.get(`http://localhost:3001/events/${id}`);
+    const response = await axios.get(`https://server-eventifypro.onrender.com/events/${id}`);
     const data = response.data;
     return data;
   } catch (error) {
