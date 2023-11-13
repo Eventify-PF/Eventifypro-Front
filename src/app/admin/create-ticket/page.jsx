@@ -46,6 +46,15 @@ const TicketPage = () => {
       })
     );
   };
+
+  
+  const handleDisabled = () => {
+    for (let error in errors) {
+      if (errors[error] !== "") return true;
+    }
+    return false;
+  };
+  
 const handleSubmit = (event) => {
     console.log(event + "Error");
     event.preventDefault();
