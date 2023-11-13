@@ -6,11 +6,15 @@ import {useState,useEffect} from 'react';
 import {BsChevronCompactLeft, BsChevronCompactRight} from 'react-icons/bs';
 import {RxDotFilled} from 'react-icons/rx';
 import { fetchEvents } from '@/redux/action/eventActions';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+
 
 const Carrusel = () => {
     const eventState = useSelector((state) => state.eventReducer);
     const { events } = eventState;
     const dispatch = useDispatch();
+    const router = useRouter();
     
     useEffect(() => {
         dispatch(fetchEvents());
@@ -28,7 +32,6 @@ const Carrusel = () => {
         setCurrentIndex(newIndex);
     };
 
-
     const nextSlide = () => {
         const isLastSlide = currentIndex === images.length - 1;
         const newIndex = isLastSlide ? 0 : currentIndex + 1;
@@ -38,11 +41,14 @@ const Carrusel = () => {
     const goToSlide = (imageIndex) => {
         setCurrentIndex(imageIndex);
     }
-    
+
+    const eventIdPath = events.length > 0 ? events[currentIndex].id : null;
     return (
-        <div className='max-w-[1400px] h-[780px] w-full m-auto py-16 px-4 relative'>
-            <div style={{backgroundImage:`url(${images[currentIndex]})`}} className='w-full h-full rounded-2xl bg-center bg-cover duration-500'></div>
-            <h1>Carrusel</h1>
+
+        <div className='max-w-[1000px] h-[500px] w-full m-auto py-16 px-4 relative'>
+           <Link href={`/event/${eventIdPath}`}>
+            <div style={{backgroundImage:`url(${images[currentIndex]})`}} className='w-full h-full rounded-2xl bg-center bg-cover duration-500 shadow-lg'/>
+            </Link>
             <div className='absolute top-[50%] -translate-x-0 translate-y-[-50%] left-5 text-2xl rounded-full p-2 bg-black/20 text-white cursor-pointer hover:bg-black/30 transform transition hover:scale-110'>
                 <BsChevronCompactLeft onClick={prevSlide} size={30}/>
             </div>
