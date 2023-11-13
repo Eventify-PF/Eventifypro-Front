@@ -1,7 +1,7 @@
 "use client";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import TicketList from "./ticketList";
+import TicketList from "./TicketLis";
 import { getTickets } from "@/redux/action/ticketActions";
 
 const myTicketsPage = () => {
