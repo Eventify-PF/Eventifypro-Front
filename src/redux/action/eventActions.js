@@ -95,6 +95,8 @@ export const filterEventsByDate = (date) => {
   return async (dispatch) => {
     try {
       const response = await axios.get(`/events?date=${date}`);
+      console.log(date)
+      console.log(response)
       dispatch({ type: FILTER_DATE, payload: response.data });
     } catch (error) {
       dispatch({ type: FILTER_DATE_FAILURE, payload: error.message });
