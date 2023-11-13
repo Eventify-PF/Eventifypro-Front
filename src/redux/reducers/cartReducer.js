@@ -17,6 +17,7 @@ const cartReducer = (state = initialState , action) => {
   switch(action.type){
       case ADD_TO_CART:
           const item = action.payload;
+      console.log(item)
           const existItem = state.cartItems.find((x) => x.id === item.id);
           console.log(item)
           if (existItem) {
