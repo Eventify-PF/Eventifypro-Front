@@ -1,10 +1,7 @@
 "use client";
 
 import { createEvent } from "../../../redux/action/eventActions";
-import {
-  createEventType,
-  getAllEventTypes,
-} from "@/redux/action/eventTypeActions";
+import { getAllEventTypes } from "@/redux/action/eventTypeActions";
 import validateForm from "@/utils/validateForm";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -14,6 +11,9 @@ const EventPage = () => {
     (state) => state.eventTypeReducer.eventTypes
   );
 
+  const user = useSelector((state) => state.userReducer.searchUser);
+
+  //console.log("tengo estos datos del user: ", user);
   const dispatch = useDispatch();
   const [event, setEvent] = useState({
     title: "",
@@ -23,6 +23,7 @@ const EventPage = () => {
     image: "",
     status: "active",
     eventType: "",
+    user: user?.name,
   });
 
   const [errors, setErrors] = useState({});
@@ -33,6 +34,16 @@ const EventPage = () => {
     dispatch(getAllEventTypes());
   }, [dispatch]);
 
+  useEffect(() => {
+    if (user) {
+      setEvent((prevEvent) => ({
+        ...prevEvent,
+        user: user.name,
+      }));
+    }
+    console.log("prueba");
+  }, [user]);
+
   const handleChange = (e) => {
     setEvent({ ...event, [e.target.name]: e.target.value });
     setErrors(validateForm({ ...event, [e.target.name]: e.target.value }));
@@ -40,20 +51,24 @@ const EventPage = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log("El user que se tiene al final: ", user);
+
+    setEvent({ ...event, [event.user]: user.name });
+    console.log("Lo que se manda: ", event);
     try {
       dispatch(createEvent(event));
       setMessage("You created a new event!");
-      setEvent({
-        title: "",
-        location: "",
-        date: "",
-        description: "",
-        image: "",
-        status: "active",
-        eventType: "",
-      });
+      //   setEvent({
+      //     title: "",
+      //     location: "",
+      //     date: "",
+      //     description: "",
+      //     image: "",
+      //     status: "active",
+      //     eventType: "",
+      //   });
 
-      //console.log(event);
+      //   //console.log(event);
     } catch (error) {
       setMessage("There is a problem:", error);
     }
@@ -72,6 +87,7 @@ const EventPage = () => {
         onSubmit={handleSubmit}
         className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
       >
+        <span>User: {user.name}</span>
         <h2 className="text-2xl mb-4">ENTER EVENT DATA</h2>
         <div className="mb-4">
           <label className="block text-gray-700 text-sm font-bold mb-2">
