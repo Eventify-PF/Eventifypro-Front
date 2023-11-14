@@ -16,6 +16,7 @@
     "@mui/icons-material": "^5.14.15",
     "@mui/material": "^5.14.15",
     "@reduxjs/toolkit": "^1.9.7",
+    "auth0": "^4.1.0",
     "axios": "^1.5.1",
     "cloudinary": "^1.41.0",
     "js-cookie": "^3.0.5",

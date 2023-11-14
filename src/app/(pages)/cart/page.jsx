@@ -1,7 +1,8 @@
 "use client"
-import { AddCart, removeFromCart } from "@/redux/action/cartAction";
+import { useEffect } from "react";
+
+import { AddCart, hideLoading, removeFromCart } from "@/redux/action/cartAction";
 import { useSelector, useDispatch } from 'react-redux';
-import Container from "@/components/Container";
 import Link from "next/link";
 import axios from "axios";
 
@@ -30,23 +31,32 @@ const CartPage = () => {
   });
 
     try {
-  const response  = await axios.post('http://localhost:3001/mercadoPago',listCart);
-  const data = response.data;
-  window.location.href = data;
+    const response  = await axios.post('http://localhost:3001/mercadoPago',listCart);
+    const data = response.data;
+    window.location.href = data;
   } catch (error) {
     return error;
   }
  }
+
+ useEffect(() => {
+  dispatch(hideLoading());
+}, []);
+
+useEffect(() => {
+  localStorage.setItem('cart', JSON.stringify(cartItems));
+}, [cartItems]);
+
   return (
-    <>
+    <div className="max-w-[2520px] mx-autoxl:px-20 md:px-10 sm:px-2 px-4">
       <h1 className="mb-10 text-center text-4xl font-bold my-10">Tickets</h1>
-      <Container>
-      {cartItems.length === 0 ? (
+      {loading ? (
+        <div>Loading...</div>
+      ) : cartItems.length === 0 ? (
         <div className="text-center font-bold">
           No Tickets in the Cart. <Link href="/event">Go shopping</Link>
         </div>
-      ):(
-
+      ) :(
         <div className="grid md:grid-cols-4 md:gap-5  bg-white ">
           <div className="overflow-x-auto md:col-span-3">
             <table className="min-w-full">
@@ -93,7 +103,7 @@ const CartPage = () => {
               </tbody>
             </table>
           </div>
-          <div>
+          
             <div className="card p-5">
               <ul>
                 <li>
@@ -113,11 +123,9 @@ const CartPage = () => {
               </ul>
             </div>
           </div>
-        </div>
+        
       )}
-
-    </Container>
-    </>
+    </div>
 
   );
 }
