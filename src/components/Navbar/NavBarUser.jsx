@@ -29,9 +29,7 @@ const NavBarUser = ({ user }) => {
             <li className="block p-2 hover:bg-gray-200">
               <Link href={`/user/}`}>Profile</Link>
             </li>
-            <li className="block p-2 hover:bg-gray-200">
-              <Link href={`/user/my-tickets`}>My Tickets</Link>
-            </li>
+
             {searchUser.isAdmin && (
               <div>
                 <li className="block p-2 hover:bg-gray-200">
@@ -67,9 +65,6 @@ const NavBarUser = ({ user }) => {
           <ul className="absolute left-0 top-full mt-2 w-full bg-white border rounded-md shadow-lg">
             <li className="block p-2 hover:bg-gray-200">
               <Link href={`/user/}`}>Profile</Link>
-            </li>
-            <li className="block p-2 hover:bg-gray-200">
-              <Link href={`/user/my-tickets`}>My Tickets</Link>
             </li>
           </ul>
         )}
