@@ -3,7 +3,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 
-const NavBarUser = ({ user }) => {
+const NavBarUser = () => {
   const searchUser = useSelector((state) => state.userReducer.searchUser);
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -15,7 +15,7 @@ const NavBarUser = ({ user }) => {
     return (
       <div className="relative flex items-center">
         <button onClick={handleChange} className="flex items-center">
-          <span className="text-white">{user.name}</span>
+          <span className="text-white">{searchUser.name}</span>
           <Image
             src="images/arrow-down.svg"
             height="25"
@@ -52,7 +52,7 @@ const NavBarUser = ({ user }) => {
     return (
       <div className="relative flex items-center">
         <button onClick={handleChange} className="flex items-center">
-          <span className="text-white">{user.name}</span>
+          <span className="text-white">{searchUser.name}</span>
           <Image
             src="public/images/arrow-down.svg"
             height="25"

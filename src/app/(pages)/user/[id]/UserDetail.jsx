@@ -21,7 +21,7 @@ const UserDetail = ({ userDetail }) => {
 
   const [pass, setPass] = useState({
     id: userDetail.id,
-    password: null,
+    password: "",
     newPassword: "",
     newPasswordCopy: "",
   });
@@ -43,37 +43,36 @@ const UserDetail = ({ userDetail }) => {
     }
   }, [userDetail]);
 
-  useEffect(() => {
-    if (option === "form2") {
-      setPass({
-        id: userDetail.id,
-        password: null,
-        newPassword: "",
-        newPasswordCopy: "",
-      });
-    }
-  }, [option, userDetail.id]);
-
   const handleChange = (e) => {
     setUser({ ...user, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleOptionChange = (newOption) => {
+    setOption(newOption);
+    setPass({
+      id: userDetail.id,
+      password: "",
+      newPassword: "",
+      newPasswordCopy: "",
+    });
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     //console.log(user);
     try {
-      dispatch(updateUser(user));
-      setMessage("You updated a new event!");
+      await dispatch(updateUser(user));
+      setMessage("Your data is updated!");
     } catch (error) {
       setMessage("There is a problem:", error);
     }
   };
 
-  const handleSubmitPass = (e) => {
+  const handleSubmitPass = async (e) => {
     e.preventDefault();
-    console.log(pass);
+    //console.log(pass);
     try {
-      dispatch(passwordUser(pass));
+      await dispatch(passwordUser(pass));
       setMessage2("You'd changed your password!");
     } catch (error) {
       setMessage2("There is a problem:", error.message);
@@ -85,7 +84,7 @@ const UserDetail = ({ userDetail }) => {
       <div className="bg-white shadow-md rounded w-full max-w-md">
         <div className="flex w-full ">
           <button
-            onClick={() => setOption("form1")}
+            onClick={() => handleOptionChange("form1")}
             className={`w-1/2 rounded-l-md ${
               option === "form1"
                 ? "bg-blue-500 text-white"
@@ -95,7 +94,7 @@ const UserDetail = ({ userDetail }) => {
             Personal information
           </button>
           <button
-            onClick={() => setOption("form2")}
+            onClick={() => handleOptionChange("form2")}
             className={`w-1/2 rounded-r-md ${
               option === "form2"
                 ? "bg-blue-500 text-white"
@@ -184,6 +183,9 @@ const UserDetail = ({ userDetail }) => {
                 </label>
                 <input
                   className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  name="password"
+                  type="text"
+                  value={pass.password}
                   onChange={handleChangePassword}
                 />
                 <label className="block text-gray-700 text-sm font-bold mb-2">
