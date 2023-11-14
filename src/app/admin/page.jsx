@@ -8,10 +8,14 @@ import { useDispatch, useSelector } from "react-redux";
 const EventPage = () => {
   const dispatch = useDispatch();
   const events = useSelector((state) => state.eventReducer.allEvents);
+  const user = useSelector((state) => state.userReducer.searchUser);
 
   useEffect(() => {
-    dispatch(getAllEvents());
-  }, [dispatch]);
+    if (user) {
+      dispatch(getAllEvents(user.id));
+    }
+  }, [dispatch, user]);
+
   return (
     <div>
       <EventList events={events} />
