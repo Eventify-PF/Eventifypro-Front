@@ -1,74 +1,51 @@
 "use client";
 
-import { createEvent } from "../../../redux/action/eventActions";
-import { getAllEventTypes } from "@/redux/action/eventTypeActions";
-import validateForm from "@/utils/validateForm";
+import React from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { fetchEvents } from "@/redux/action/eventActions";
+import validateTicket from "@/utils/validateTicket";
+import { createTicket } from "@/redux/action/ticketActions";
 
-const EventPage = () => {
-  const allEventTypes = useSelector(
-    (state) => state.eventTypeReducer.eventTypes
-  );
-
-  const user = useSelector((state) => state.userReducer.searchUser);
-
-  //console.log("tengo estos datos del user: ", user);
+const TicketPage = () => {
+  const allEvents = useSelector((state) => state.eventReducer.allEvents);
   const dispatch = useDispatch();
-  const [event, setEvent] = useState({
-    title: "",
-    location: "",
-    date: "",
+
+  const [ticket, setTicket] = useState({
+    name: "",
+    price: "",
+    stock: "",
     description: "",
     image: "",
-    status: "active",
-    eventType: "",
-    user: user?.email,
+    state: "active",
+    event: "",
   });
 
-  const [errors, setErrors] = useState({});
-
-  const [message, setMessage] = useState("");
+  const [errors, setErrors] = useState({
+    name: "",
+    price: "",
+    stock: "",
+    description: "",
+    image: "",
+    state: "",
+    event: "",
+  });
 
   useEffect(() => {
-    dispatch(getAllEventTypes());
+    dispatch(fetchEvents());
   }, [dispatch]);
 
-  useEffect(() => {
-    if (user) {
-      setEvent((prevEvent) => ({
-        ...prevEvent,
-        user: user.email,
-      }));
-    }
-  }, [user]);
-
-  const handleChange = (e) => {
-    setEvent({ ...event, [e.target.name]: e.target.value });
-    setErrors(validateForm({ ...event, [e.target.name]: e.target.value }));
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    // console.log("El user que se tiene al final: ", user);
-
-    // console.log("Lo que se manda: ", event);
-    try {
-      await dispatch(createEvent(event));
-      setMessage("You created a new event!");
-      setEvent({
-        title: "",
-        location: "",
-        date: "",
-        description: "",
-        image: "",
-        status: "active",
-        eventType: "",
-      });
-    } catch (error) {
-      alert(error.response.data);
-      setMessage("There is a problem:", error.response.data);
-    }
+  const handleChange = (event) => {
+    setTicket({
+      ...ticket,
+      [event.target.name]: event.target.value,
+    });
+    setErrors(
+      validateTicket({
+        ...ticket,
+        [event.target.name]: event.target.value,
+      })
+    );
   };
 
   const handleDisabled = () => {
@@ -78,117 +55,131 @@ const EventPage = () => {
     return false;
   };
 
+  const handleSubmit = (event) => {
+    console.log(event + "Error");
+    event.preventDefault();
+    try {
+      dispatch(createTicket(ticket));
+      setTicket({
+        name: "",
+        price: "",
+        stock: "",
+        description: "",
+        image: "",
+        state: "active",
+        event: "",
+      });
+    } catch (error) {
+      alert("There is a problem:", error);
+    }
+  };
+
   return (
     <div className="flex justify-center items-center h-screen mt-12">
       <form
         onSubmit={handleSubmit}
         className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
       >
-        <span>User: {user.name}</span>
-        <h2 className="text-2xl mb-4">ENTER EVENT DATA</h2>
+        <h2 className="text-2xl mb-4">Add Tickets to your Event!</h2>
+
         <div className="mb-4">
           <label className="block text-gray-700 text-sm font-bold mb-2">
-            Title:
+            Name
           </label>
           <input
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            name="title"
-            placeholder="Enter a title..."
             type="text"
-            value={event.title}
+            name="name"
+            value={ticket.name}
             onChange={handleChange}
           />
-          <span className="text-red-500 text-xs italic">{errors.title}</span>
-          <br />
+          {errors.name && (
+            <p className="text-red-500 text-xs italic">{errors.name}</p>
+          )}
+
           <label className="block text-gray-700 text-sm font-bold mb-2">
-            Location:
+            Price
           </label>
           <input
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            name="location"
-            value={event.location}
-            placeholder="Enter a location..."
             type="text"
+            name="price"
+            value={ticket.price}
             onChange={handleChange}
           />
-          <span className="text-red-500 text-xs italic">{errors.location}</span>
-          <br />
+          {errors.price && (
+            <p className="text-red-500 text-xs italic">{errors.price}</p>
+          )}
+
           <label className="block text-gray-700 text-sm font-bold mb-2">
-            Date:
+            Stock
           </label>
           <input
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            name="date"
-            type="date"
-            value={event.date}
+            type="text"
+            name="stock"
+            value={ticket.stock}
             onChange={handleChange}
           />
-          <span className="text-red-500 text-xs italic">{errors.date}</span>
-          <br />
+          {errors.stock && (
+            <p className="text-red-500 text-xs italic">{errors.stock}</p>
+          )}
+
           <label className="block text-gray-700 text-sm font-bold mb-2">
-            Description:
+            Description
           </label>
           <input
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            type="text"
             name="description"
-            placeholder="Enter a brief description..."
-            type="text"
-            value={event.description}
+            value={ticket.description}
             onChange={handleChange}
           />
-          <span className="text-red-500 text-xs italic">
-            {errors.description}
-          </span>
-          <br />
+          {errors.description && (
+            <p className="text-red-500 text-xs italic">{errors.description}</p>
+          )}
+
           <label className="block text-gray-700 text-sm font-bold mb-2">
-            Image:
+            Image
           </label>
           <input
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            type="text"
             name="image"
-            placeholder="Enter a URL..."
-            type="url"
-            value={event.image}
+            value={ticket.image}
             onChange={handleChange}
           />
-          <span className="text-red-500 text-xs italic">{errors.image}</span>
-          <br />
-          <label>New Event Type:</label>
-          <input
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            placeholder="Enter a new event type"
-            name="eventType"
-            onChange={handleChange}
-            value={event.eventType}
-          />
-          <br />
+          {errors.image && (
+            <p className="text-red-500 text-xs italic">{errors.image}</p>
+          )}
+
           <label className="block text-gray-700 text-sm font-bold mb-2">
-            Event Type:
+            Event
           </label>
           <select
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            name="eventType"
+            type="text"
+            name="event"
+            value={ticket.event}
             onChange={handleChange}
-            value={event.eventType}
           >
-            <option value="">Select Event Type</option>
-            {allEventTypes?.map((elem) => (
-              <option key={elem.id}>{elem.name}</option>
+            <option value="">Select an Event</option>
+            {allEvents?.map((event) => (
+              <option key={event.id} value={event.id}>
+                {event.title}
+              </option>
             ))}
           </select>
-
-          <span className="text-red-500 text-xs italic">
-            {errors.eventType}
-          </span>
-          <br />
-          {message && (
-            <span className="text-red-500 text-xs italic">{message}</span>
+          {errors.event && (
+            <p className="text-red-500 text-xs italic">{errors.event}</p>
           )}
+
           <button
+            type="submit"
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
             disabled={handleDisabled()}
           >
-            SUBMIT
+            Add Ticket
           </button>
         </div>
       </form>
@@ -196,4 +187,4 @@ const EventPage = () => {
   );
 };
 
-export default EventPage;
+export default TicketPage;
