@@ -8,8 +8,8 @@ export default function validateForm(inputs) {
   if (!inputs.date) errors.date = "A date must be entered";
   else if (!regexDATE.test(inputs.date)) "Invalid Date";
   if (!inputs.description) errors.description = "A description must be entered";
-  if (!inputs.image) errors.image = "An image must be entered";
-  else if (!regexURL.test(inputs.image)) errors.image = "Invalid URL";
+  // if (!inputs.image) errors.image = "An image must be entered";
+  // else if (!regexURL.test(inputs.image)) errors.image = "Invalid URL";
   if (!inputs.eventType) errors.eventType = "You must select an event type";
   return errors;
 }

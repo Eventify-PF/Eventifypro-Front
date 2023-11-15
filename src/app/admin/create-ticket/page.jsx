@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { fetchEvents } from "@/redux/action/eventActions";
 import validateTicket from "@/utils/validateTicket";
 import { createTicket } from "@/redux/action/ticketActions";
+import axios from "axios";
 
 const TicketPage = () => {
   const allEvents = useSelector((state) => state.eventReducer.events);
@@ -30,6 +31,21 @@ const TicketPage = () => {
     state: "",
     event: "",
   });
+
+  const [urlImage, setUrlImage] = useState("")
+
+  const uploadChange = async (event) =>{
+    const file = event.target.files[0]
+    const data = new FormData()
+    data.append("file", file)
+    data.append("upload_preset", "eventify")
+    const response = await axios.post("https://api.cloudinary.com/v1_1/dgbvwixwk/image/upload", data)
+    setUrlImage(response.data.secure_url)
+  }
+  
+  const deleteImage = () => {
+    setUrlImage("")
+  }
 
   useEffect(() => {
     dispatch(fetchEvents());
@@ -143,13 +159,15 @@ const TicketPage = () => {
           <label className="block text-gray-700 text-sm font-bold mb-2">
             Image
           </label>
-          <input
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            type="text"
-            name="image"
-            value={ticket.image}
-            onChange={handleChange}
-          />
+          <input type="file" accept="image/*" onChange={uploadChange}/>
+          {
+            urlImage && (
+              <div className="flex flex-col items-center justify-center">
+                <img src={urlImage} alt="" className="w-[180px] mb-2 mt-2 rounded"/>
+                <button onClick={() => {deleteImage()}} className="bg-red-500 text-white py-1 px-2 rounded hover:bg-red-700 text-sm">X</button>
+              </div>
+            )
+          }
           {errors.image && (
             <p className="text-red-500 text-xs italic">{errors.image}</p>
           )}

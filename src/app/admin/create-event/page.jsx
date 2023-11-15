@@ -1,19 +1,20 @@
 "use client";
 
 import { createEvent } from "../../../redux/action/eventActions";
-import {
-  createEventType,
-  getAllEventTypes,
-} from "@/redux/action/eventTypeActions";
+import { getAllEventTypes } from "@/redux/action/eventTypeActions";
 import validateForm from "@/utils/validateForm";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
 
 const EventPage = () => {
   const allEventTypes = useSelector(
     (state) => state.eventTypeReducer.eventTypes
   );
 
+  const user = useSelector((state) => state.userReducer.searchUser);
+
+  //console.log("tengo estos datos del user: ", user);
   const dispatch = useDispatch();
   const [event, setEvent] = useState({
     title: "",
@@ -23,7 +24,21 @@ const EventPage = () => {
     image: "",
     status: "active",
     eventType: "",
+    user: user?.name,
   });
+
+  const [urlImage, setUrlImage] = useState("")
+const uploadChange = async (event) =>{
+const file = event.target.files[0]
+const data = new FormData()
+data.append("file", file)
+data.append("upload_preset", "eventify")
+const response = await axios.post("https://api.cloudinary.com/v1_1/dgbvwixwk/image/upload", data)
+setUrlImage(response.data.secure_url)
+}
+const deleteImage = () => {
+  setUrlImage("")
+}
 
   const [errors, setErrors] = useState({});
 
@@ -33,6 +48,16 @@ const EventPage = () => {
     dispatch(getAllEventTypes());
   }, [dispatch]);
 
+  useEffect(() => {
+    if (user) {
+      setEvent((prevEvent) => ({
+        ...prevEvent,
+        user: user.name,
+      }));
+    }
+    console.log("prueba");
+  }, [user]);
+
   const handleChange = (e) => {
     setEvent({ ...event, [e.target.name]: e.target.value });
     setErrors(validateForm({ ...event, [e.target.name]: e.target.value }));
@@ -40,20 +65,24 @@ const EventPage = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log("El user que se tiene al final: ", user);
+
+    setEvent({ ...event, [event.user]: user.name });
+    console.log("Lo que se manda: ", event);
     try {
       dispatch(createEvent(event));
       setMessage("You created a new event!");
-      setEvent({
-        title: "",
-        location: "",
-        date: "",
-        description: "",
-        image: "",
-        status: "active",
-        eventType: "",
-      });
+      //   setEvent({
+      //     title: "",
+      //     location: "",
+      //     date: "",
+      //     description: "",
+      //     image: "",
+      //     status: "active",
+      //     eventType: "",
+      //   });
 
-      //console.log(event);
+      //   //console.log(event);
     } catch (error) {
       setMessage("There is a problem:", error);
     }
@@ -72,6 +101,7 @@ const EventPage = () => {
         onSubmit={handleSubmit}
         className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
       >
+        <span>User: {user.name}</span>
         <h2 className="text-2xl mb-4">ENTER EVENT DATA</h2>
         <div className="mb-4">
           <label className="block text-gray-700 text-sm font-bold mb-2">
@@ -130,14 +160,23 @@ const EventPage = () => {
           <label className="block text-gray-700 text-sm font-bold mb-2">
             Image:
           </label>
-          <input
+          <input type="file" accept="image/*" onChange={uploadChange}/>
+          {
+            urlImage && (
+              <div className="flex flex-col items-center justify-center">
+                <img src={urlImage} alt="" className="w-[180px] mb-2 mt-2 rounded"/>
+                <button onClick={() => {deleteImage()}} className="bg-red-500 text-white py-1 px-2 rounded hover:bg-red-700 text-sm">X</button>
+              </div>
+            )
+          }
+          {/* <input
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             name="image"
             placeholder="Enter a URL..."
             type="url"
             value={event.image}
             onChange={handleChange}
-          />
+          /> */}
           <span className="text-red-500 text-xs italic">{errors.image}</span>
           <br />
           <label>New Event Type:</label>
@@ -184,3 +223,30 @@ const EventPage = () => {
 };
 
 export default EventPage;
+
+
+
+// const [urlImage, setUrlImage] = useState("")
+// const uploadChange = async (event) =>{
+// const file = event.target.files[0]
+// const data = new FormData()
+// data.append("file", file)
+// data.append("upload_preset", "eventify")
+// const response = await axios.post("https://api.cloudinary.com/v1_1/dgbvwixwk/image/upload", data)
+// setUrlImage(response.data.secure_url)
+// }
+// const deleteImage = () => {
+//   setUrlImage("")
+// }
+// <div>
+//   <input type="file" accept="image/*" onChange={uploadChange}/>
+//   {
+//     urlImage && (
+//       <div>
+//       <img src={urlImage} alt="" />
+//       <button onClick={() => {deleteImage()}}>Delete Image</button>
+//       </div>
+//     )
+//   }
+  
+// </div>
