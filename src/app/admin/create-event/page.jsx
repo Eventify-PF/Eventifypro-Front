@@ -67,7 +67,9 @@ const EventPage = () => {
         setMessage(`There is a problem: ${response.error.message}`);
       }
     } catch (error) {
+ 
       setMessage(`There is a problem: ${error.message}`);
+ 
     }
   };
 
