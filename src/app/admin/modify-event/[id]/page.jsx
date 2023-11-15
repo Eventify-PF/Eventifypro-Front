@@ -1,4 +1,5 @@
 import EditEventForm from "@/components/updateEvent";
+import axios from "axios";
 
 const loadEvent = async (id) => {
   try {
@@ -6,7 +7,10 @@ const loadEvent = async (id) => {
     const response = await fetch(
       `https://server-eventifypro.onrender.com/events/${id}`
     );
-    const data = response.data;
+    if (!response.ok) {
+      throw new Error("No se pudo cargar el evento.");
+    }
+    const data = await response.json();
     return data;
   } catch (error) {
     console.error("Error al cargar el evento:", error);

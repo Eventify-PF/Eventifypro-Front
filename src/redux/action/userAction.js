@@ -7,6 +7,7 @@ import {
   GET_ALL_USERS, 
   SET_SEARCH_USER,
   PASSWORD_USER,
+  USER_ORDER,
 } from "../action-type/userConstans";
 
 //const endpoint = `http://localhost:3001/users`;
@@ -86,3 +87,9 @@ export const passwordUser = (user) => {
   
   
   
+export const getOrdersByUser = (idUser) => {
+  return async (dispatch) => {
+    const { data } = await axios.get(`/users/orders?idUser=${idUser}`);
+    return dispatch({ type: USER_ORDER, payload: data });
+  };
+};

@@ -15,7 +15,7 @@ const NavBarUser = () => {
     return (
       <div className="relative flex items-center">
         <button onClick={handleChange} className="flex items-center">
-          <span className="text-white">{searchUser.name}</span>
+          <span className="text-white">{searchUser.name},Tu cuenta</span>
           <Image
             src="images/arrow-down.svg"
             height="25"
@@ -28,6 +28,9 @@ const NavBarUser = () => {
           <ul className="absolute left-0 top-full mt-2 w-full bg-white border rounded-md shadow-lg">
             <li className="block p-2 hover:bg-gray-200">
               <Link href={`/user/}`}>Profile</Link>
+            </li>
+            <li className="block p-2 hover:bg-gray-200">
+              <Link href={`/user/my-tickets}`}>My Tickets</Link>
             </li>
 
             {searchUser.isAdmin && (
