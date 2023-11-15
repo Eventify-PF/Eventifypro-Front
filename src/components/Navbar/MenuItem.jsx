@@ -18,6 +18,10 @@ const MenuItem = () => {
               <Link href={'/admin'}>Admin</Link>
             </li>
           )}
+
+          <li className="block p-2 hover:bg-gray-200">
+            <Link href={`/reviews`}>Reviews</Link>
+          </li>
         </ul>
       </div>
     );
