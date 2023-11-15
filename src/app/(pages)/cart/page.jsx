@@ -10,7 +10,7 @@ const CartPage = () => {
   const dispatch = useDispatch();
   const ticketsState = useSelector((state) => state.cartReducer);
   const {cartItems, itemsPrice, loading} = ticketsState;
-
+console.log(cartItems)
   const removeFromCartHandler = (id) => {
     dispatch(removeFromCart(id))
   }
@@ -27,6 +27,8 @@ const CartPage = () => {
       image: item.image,
       price: item.price,
       quantity: item.quantity,
+      eventTitle: item.title,
+      userId: item.userId,
     }
   });
 

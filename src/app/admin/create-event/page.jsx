@@ -23,7 +23,7 @@ const EventPage = () => {
     image: "",
     status: "active",
     eventType: "",
-    user: user?.name,
+    user: user?.email,
   });
 
   const [errors, setErrors] = useState({});
@@ -38,10 +38,9 @@ const EventPage = () => {
     if (user) {
       setEvent((prevEvent) => ({
         ...prevEvent,
-        user: user.name,
+        user: user.email,
       }));
     }
-    console.log("prueba");
   }, [user]);
 
   const handleChange = (e) => {
@@ -49,28 +48,26 @@ const EventPage = () => {
     setErrors(validateForm({ ...event, [e.target.name]: e.target.value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("El user que se tiene al final: ", user);
+    // console.log("El user que se tiene al final: ", user);
 
-    setEvent({ ...event, [event.user]: user.name });
-    console.log("Lo que se manda: ", event);
+    // console.log("Lo que se manda: ", event);
     try {
-      dispatch(createEvent(event));
+      await dispatch(createEvent(event));
       setMessage("You created a new event!");
-      //   setEvent({
-      //     title: "",
-      //     location: "",
-      //     date: "",
-      //     description: "",
-      //     image: "",
-      //     status: "active",
-      //     eventType: "",
-      //   });
-
-      //   //console.log(event);
+      setEvent({
+        title: "",
+        location: "",
+        date: "",
+        description: "",
+        image: "",
+        status: "active",
+        eventType: "",
+      });
     } catch (error) {
-      setMessage("There is a problem:", error);
+      alert(error.response.data);
+      setMessage("There is a problem:", error.response.data);
     }
   };
 

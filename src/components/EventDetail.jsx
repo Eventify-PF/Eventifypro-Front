@@ -14,6 +14,9 @@ const EventDetail = ({detailEvent}) => {
   const pathname = usePathname()
   const { tickets } = detailEvent;
   const ticketsState = useSelector((state) => state.cartReducer);
+  const activeUser = useSelector((state) => state.userReducer.searchUser);
+  const activeUserId = activeUser.id;
+  
   const {cartItems, itemsPrice, loading} = ticketsState
   const dispatch = useDispatch();
   if (tickets.length === 0) {
@@ -34,6 +37,7 @@ const EventDetail = ({detailEvent}) => {
         price: ticket.price,
         stock: ticket.stock,
         quantity: ticket.quantity,
+        userId: activeUserId,
       };
 
       dispatch(AddCart(eventTikect));

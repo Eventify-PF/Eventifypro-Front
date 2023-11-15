@@ -57,9 +57,9 @@ export const fetchEvents = () => {
   };
 };
 
-export const getAllEvents = () => {
+export const getAllEvents = (idUser) => {
   return async (dispatch) => {
-    const { data } = await axios.get("/events/all");
+    const { data } = await axios.get(`/events/all?idUser=${idUser}`);
     dispatch({ type: GET_ALL_EVENTS, payload: data });
   };
 };

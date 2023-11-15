@@ -8,7 +8,7 @@ import validateTicket from "@/utils/validateTicket";
 import { createTicket } from "@/redux/action/ticketActions";
 
 const TicketPage = () => {
-  const allEvents = useSelector((state) => state.eventReducer.events);
+  const allEvents = useSelector((state) => state.eventReducer.allEvents);
   const dispatch = useDispatch();
 
   const [ticket, setTicket] = useState({
@@ -34,7 +34,7 @@ const TicketPage = () => {
   useEffect(() => {
     dispatch(fetchEvents());
   }, [dispatch]);
-  
+
   const handleChange = (event) => {
     setTicket({
       ...ticket,
@@ -45,9 +45,9 @@ const TicketPage = () => {
         ...ticket,
         [event.target.name]: event.target.value,
       })
-      );
-    };
-    
+    );
+  };
+
   const handleDisabled = () => {
     for (let error in errors) {
       if (errors[error] !== "") return true;
@@ -73,7 +73,6 @@ const TicketPage = () => {
       alert("There is a problem:", error);
     }
   };
-
 
   return (
     <div className="flex justify-center items-center h-screen mt-12">
