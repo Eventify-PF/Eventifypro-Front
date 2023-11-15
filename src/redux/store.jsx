@@ -7,6 +7,7 @@ import eventTypeReducer from './reducers/eventTypeReducer';
 import ticketReducer from './reducers/ticketReducer';
 import cartReducer from './reducers/cartReducer';
 import userReducer from "./reducers/userReducer";
+import reviewReducer from "./reducers/reviewReducer";
 
 const rootReducer = combineReducers({
     eventReducer,
@@ -14,6 +15,7 @@ const rootReducer = combineReducers({
     ticketReducer,
     cartReducer,
     userReducer,
+    reviewReducer
 },);
 
 const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(thunk)));
