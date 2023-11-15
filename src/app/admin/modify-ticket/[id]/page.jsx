@@ -1,16 +1,18 @@
 import EditTicketForm from "@/components/updateTicket";
+import axios from "axios";
 
 const loadTicket = async (id) => {
   try {
-    // const res = await fetch(`http://localhost:3001/events/${id}`);
+    // const res = await fetch(`http://localhost:3001/events/ticket/${id}`);
     const res = await fetch(
-      `https://server-eventifypro.onrender.com/events/${id}`
+      `https://server-eventifypro.onrender.com/events/ticket/${id}`
     );
     if (!res.ok) {
       throw new Error("No se pudo cargar el ticket.");
     }
     const data = await res.json();
-    return data.tickets[0];
+
+    return data;
   } catch (error) {
     console.error("Error al cargar el ticket:", error);
     return null; // Trata el error adecuadamente según tus necesidades
