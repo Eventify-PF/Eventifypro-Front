@@ -5,7 +5,7 @@ const { updateTicket } = require("@/redux/action/ticketActions");
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 
-export default function EditTicketForm ({ detailTicket }) {
+export default function EditTicketForm({ detailTicket }) {
   const dispatch = useDispatch();
   const [errors, setErrors] = useState({});
   const [message, setMessage] = useState("");
@@ -18,6 +18,8 @@ export default function EditTicketForm ({ detailTicket }) {
     stock: detailTicket.stock,
     description: detailTicket.description,
   });
+
+  console.log(ticket);
 
   const handleChange = (e) => {
     setTicket({ ...ticket, [e.target.name]: e.target.value });
@@ -73,13 +75,13 @@ export default function EditTicketForm ({ detailTicket }) {
           <br />
 
           <label className="block text-gray-700 text-sm font-bold mb-2">
-            Stock:
+            Stock a agregar:
           </label>
           <input
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             name="stock"
             value={ticket.stock}
-            placeholder={detailTicket.stock}
+            placeholder={`Stock actual: ${detailTicket.stock}`}
             type="text"
             onChange={handleChange}
           />
@@ -112,5 +114,4 @@ export default function EditTicketForm ({ detailTicket }) {
       </form>
     </div>
   );
-};
-
+}

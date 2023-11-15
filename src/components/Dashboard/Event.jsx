@@ -111,7 +111,7 @@ const Event = ({ event }) => {
                       </td>
                       <td className="flex justify-center py-2">
                         <Link
-                          href={`/admin/modify-ticket/${event.id}`}
+                          href={`/admin/modify-ticket/${ticket.id}`}
                           className="rounded-md border p-2 hover:bg-gray-100"
                         >
                           <PencilIcon className="w-5" />
