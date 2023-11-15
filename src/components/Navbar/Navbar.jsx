@@ -1,26 +1,28 @@
-'use client';
-import React from 'react';
-import Container from '../Container';
-import Logo from '../Logo';
-import MenuItem from './MenuItem';
-import Image from 'next/image';
-import { usePathname, useRouter } from 'next/navigation';
-import Login from '../../app/api/auth/loginButton';
-import Logout from '../../app/api/auth/logoutButton';
+"use client";
+import React from "react";
+import Container from "../Container";
+import Logo from "../Logo";
+import MenuItem from "./MenuItem";
+import Image from "next/image";
+import { usePathname, useRouter } from "next/navigation";
+import Login from "../../app/api/auth/loginButton";;
+import Logout from "../../app/api/auth/logoutButton";;
 import BannedUserPage from '../Banned/BannedUserPage';
-import { useUser } from '@auth0/nextjs-auth0/client';
-import { useDispatch, useSelector} from 'react-redux';
-import { postUser } from '@/redux/action/userAction'; 
-import { useEffect } from 'react';
-import { useState } from 'react';
-import { searchUserByEmail } from '@/redux/action/userAction';
+import { useUser } from "@auth0/nextjs-auth0/client";
+import { useDispatch, useSelector} from "react-redux";
+import { postUser } from "@/redux/action/userAction";
+import { useEffect } from "react";
+import { useState } from "react";
+import { searchUserByEmail } from "@/redux/action/userAction";
+import NavBarUser from "./NavBarUser";
 
 const Navbar = () => {
   const { user, isLoading } = useUser();
   const dispatch = useDispatch();
   const searchUser = useSelector((state) => state.userReducer.searchUser);
 
-  const [showEmailVerificationAlert, setShowEmailVerificationAlert] = useState(false);
+  const [showEmailVerificationAlert, setShowEmailVerificationAlert] =
+    useState(false);
   const [registrationRequested, setRegistrationRequested] = useState(false);
   const [userBanned, setUserBanned] = useState(false);
   
@@ -31,13 +33,13 @@ const Navbar = () => {
       if (!registrationRequested) {
         // Evita solicitudes duplicadas
         setRegistrationRequested(true);
-  
+
         const userData = {
           name: user.name,
           email: user.email,
           email_verified: user.email_verified,
         };
-  
+
         dispatch(postUser(userData));
       }
     }
@@ -76,30 +78,32 @@ const Navbar = () => {
 								{isLoading ? (
                     <div>Cargando...</div>
                   ) : user ? (
-                    <div className="flex items-center"> {/* Contenedor flex para la imagen y el botón */}
-                      <img
-                        src={user.picture}
-                        alt="Avatar"
-                        className="w-10 h-10 rounded-full mr-2" 
-                      />
-                      <Logout /> 
-                    </div>
+                    <div className="flex items-center"> 
                       
-                  ) : (
+                    <NavBarUser />
+                    <Logout />
+                  </div>
+                ) : (
                     <div>
-                    <Login /> 
+                  <Login />
                     
                     </div>
-                  )}
-							</div>
-						</div>
-					</div>
-				</Container>
-			</div>
+                )}
+              </div>
+            </div>
+          </div>
+        </Container>
+      </div>
       {showEmailVerificationAlert && (
         <div className="bg-yellow-200 text-yellow-800 p-2 text-center">
-          Tu correo electrónico no ha sido verificado. Por favor, verifica tu correo electrónico para continuar.
-          <a href='/api/auth/logout' className="block bg-yellow-600 text-white font-semibold rounded px-4 py-2 mt-2 hover:bg-yellow-700">Aceptar</a>
+          Tu correo electrónico no ha sido verificado. Por favor, verifica tu
+          correo electrónico para continuar.
+          <a
+            href="/api/auth/logout"
+            className="block bg-yellow-600 text-white font-semibold rounded px-4 py-2 mt-2 hover:bg-yellow-700"
+          >
+            Aceptar
+          </a>
         </div>
       )}
       {searchUser && searchUser.ban && <BannedUserPage />}

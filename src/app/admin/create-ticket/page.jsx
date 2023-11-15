@@ -3,9 +3,9 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
-import { getEvents } from "../../../redux/action/eventActions";
-import validateTicket from "../../../utils/validateTicket";
-import { createTicket } from "../../../redux/action/ticketActions";
+import { fetchEvents } from "@/redux/action/eventActions";
+import validateTicket from "@/utils/validateTicket";
+import { createTicket } from "@/redux/action/ticketActions";
 
 const TicketPage = () => {
   const allEvents = useSelector((state) => state.eventReducer.allEvents);
@@ -30,6 +30,10 @@ const TicketPage = () => {
     state: "",
     event: "",
   });
+
+  useEffect(() => {
+    dispatch(fetchEvents());
+  }, [dispatch]);
 
   const handleChange = (event) => {
     setTicket({
@@ -69,10 +73,6 @@ const TicketPage = () => {
       alert("There is a problem:", error);
     }
   };
-
-  useEffect(() => {
-    dispatch(getEvents());
-  }, [dispatch]);
 
   return (
     <div className="flex justify-center items-center h-screen mt-12">

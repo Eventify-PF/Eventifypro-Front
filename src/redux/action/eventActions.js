@@ -1,3 +1,4 @@
+import { ConstructionOutlined } from "@mui/icons-material";
 import {
   FETCH_EVENT_REQUEST,
   FETCH_EVENT_SUCCESS,
@@ -15,7 +16,7 @@ import {
   FILTER_DATE,
   FILTER_DATE_FAILURE,
   FILTER_EVENTS,
-  FILTER_EVENTS_FAILURE
+  FILTER_EVENTS_FAILURE,
 } from "../action-type/eventConstans";
 import axios from "axios";
 
@@ -35,7 +36,8 @@ export const createEvent = (event) => {
 
 export const updateEvent = (event) => {
   return async (dispatch) => {
-    const { data } = await axios.put("/events/", event);
+    const { data } = await axios.put("/events", event);
+    console.log("Soy (data)", data);
     return dispatch({ type: UPDATE_EVENT, payload: data });
   };
 };
@@ -55,9 +57,9 @@ export const fetchEvents = () => {
   };
 };
 
-export const getAllEvents = () => {
+export const getAllEvents = (idUser) => {
   return async (dispatch) => {
-    const { data } = await axios.get("/events/all");
+    const { data } = await axios.get(`/events/all?idUser=${idUser}`);
     dispatch({ type: GET_ALL_EVENTS, payload: data });
   };
 };
@@ -95,6 +97,8 @@ export const filterEventsByDate = (date) => {
   return async (dispatch) => {
     try {
       const response = await axios.get(`/events?date=${date}`);
+      console.log(date);
+      console.log(response);
       dispatch({ type: FILTER_DATE, payload: response.data });
     } catch (error) {
       dispatch({ type: FILTER_DATE_FAILURE, payload: error.message });
@@ -105,14 +109,15 @@ export const filterEventsByDate = (date) => {
 export const filterEventsByTypeAndDate = (eventType, date) => {
   return async (dispatch) => {
     try {
-      const response = await axios.get(`/events?eventType=${eventType}&date=${date}`);
+      const response = await axios.get(
+        `/events?eventType=${eventType}&date=${date}`
+      );
       dispatch({ type: FILTER_EVENTS, payload: response.data });
     } catch (error) {
       dispatch({ type: FILTER_EVENTS_FAILURE, payload: error.message });
     }
   };
 };
-
 
 export const setCurrentPage = (page) => {
   return {
