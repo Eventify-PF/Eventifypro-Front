@@ -22,6 +22,11 @@ const AdminSidebar = () => {
                 <span className="ml-3">Tickets</span>
               </Link>
             </li>
+            <li>
+              <Link href="/admin/create-admin" className="text-base text-gray-900 font-normal rounded-lg flex items-center p-2 hover:bg-gray-100 group">
+                <span className="ml-3">SuperAdmin</span>
+              </Link>
+            </li>
           </ul>
         </div>
       </div>

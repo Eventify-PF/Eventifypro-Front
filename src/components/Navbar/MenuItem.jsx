@@ -3,7 +3,7 @@ import {  useSelector } from "react-redux";
 const MenuItem = () => {
   const searchUser = useSelector((state) => state.userReducer.searchUser);
   const { isAdmin } = searchUser;
-  
+  //console.log(searchUser)
   
   if (searchUser && searchUser.isAdmin) {
     return (

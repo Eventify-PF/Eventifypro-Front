@@ -5,10 +5,11 @@ import Logo from '../Logo';
 import MenuItem from './MenuItem';
 import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
-import Login from '../../app/api/auth/loginButton'
-import Logout from '../../app/api/auth/logoutButton'
+import Login from '../../app/api/auth/loginButton';
+import Logout from '../../app/api/auth/logoutButton';
+import BannedUserPage from '../Banned/BannedUserPage';
 import { useUser } from '@auth0/nextjs-auth0/client';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector} from 'react-redux';
 import { postUser } from '@/redux/action/userAction'; 
 import { useEffect } from 'react';
 import { useState } from 'react';
@@ -17,9 +18,12 @@ import { searchUserByEmail } from '@/redux/action/userAction';
 const Navbar = () => {
   const { user, isLoading } = useUser();
   const dispatch = useDispatch();
+  const searchUser = useSelector((state) => state.userReducer.searchUser);
 
   const [showEmailVerificationAlert, setShowEmailVerificationAlert] = useState(false);
   const [registrationRequested, setRegistrationRequested] = useState(false);
+  const [userBanned, setUserBanned] = useState(false);
+  
   
 
   useEffect(() => {
@@ -52,7 +56,14 @@ const Navbar = () => {
   }, [user, isLoading, dispatch]);
   
   
-  
+  useEffect(() => {
+    // Check if the user is banned using the information from the searchUser action
+    if (searchUser && searchUser.ban) {
+      setUserBanned(true);
+    }
+  }, [searchUser]);
+
+
 	return ( 
 		<div className="fixed w-full bg-gray-800 z-10 shadow-sm">
 			<div className="py-4 border-b-[1px]">
@@ -75,7 +86,10 @@ const Navbar = () => {
                     </div>
                       
                   ) : (
+                    <div>
                     <Login /> 
+                    
+                    </div>
                   )}
 							</div>
 						</div>
@@ -88,7 +102,9 @@ const Navbar = () => {
           <a href='/api/auth/logout' className="block bg-yellow-600 text-white font-semibold rounded px-4 py-2 mt-2 hover:bg-yellow-700">Aceptar</a>
         </div>
       )}
-	  </div>
+      {searchUser && searchUser.ban && <BannedUserPage />}
+    </div>
+	  
 	  );
 	}
 

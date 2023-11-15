@@ -1,12 +1,12 @@
 import axios from "axios";
-import { POST_USER, GET_USER, UPDATE_USER, SEARCH_USER_BY_EMAIL } from "../action-type/userConstans";
+import { POST_USER, GET_USER, UPDATE_USER, SEARCH_USER_BY_EMAIL, GET_ALL_USERS, SET_SEARCH_USER } from "../action-type/userConstans";
 
 
 //const endpoint = `http://localhost:3001/users`;
 //const endpoint = `https://server-eventifypro.onrender.com`;
 
 export function postUser(userData) {
-  console.log(userData);
+  //console.log(userData);
     return async (dispatch) => {
       try {
         const { data } = await axios.post("/users/register", userData);;
@@ -51,6 +51,24 @@ export function postUser(userData) {
       }
     };
   };
+
+  export const getAllUsers = () => {
+    return async (dispatch) => {
+      try {
+        const { data } = await axios.get("/users/todos");
+        console.log("Datos recibidos en la acción getAllUsers:", data);
+        dispatch({ type: GET_ALL_USERS, payload: data });
+      } catch (error) {
+        console.error("Error en la acción getAllUsers:", error);
+        return error.message;
+      }
+    };
+  };
+
+  export const setSearchUser = (searchTerm) => ({
+    type: "SET_SEARCH_USER",
+    payload: searchTerm,
+  });
   
   
   
