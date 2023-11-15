@@ -50,7 +50,9 @@ const EventPage = () => {
     e.preventDefault();
     try {
       const response = await dispatch(createEvent(event));
+ 
       console.log(event)
+ 
 
       if (!response.error) {
         setMessage("You created a new event!");
@@ -68,7 +70,9 @@ const EventPage = () => {
       }
     } catch (error) {
  
+ 
       setMessage(`There is a problem: ${error.message}`);
+ 
  
     }
   };
