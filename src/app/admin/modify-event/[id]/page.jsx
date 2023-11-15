@@ -2,8 +2,10 @@ import EditEventForm from "@/components/updateEvent";
 
 const loadEvent = async (id) => {
   try {
-    const response = await fetch(`http://localhost:3001/events/${id}`);
-    // const response = await fetch(`https://server-eventifypro.onrender.com/events/${id}`);
+    // const response = await fetch(`http://localhost:3001/events/${id}`);
+    const response = await fetch(
+      `https://server-eventifypro.onrender.com/events/${id}`
+    );
     const data = response.data;
     return data;
   } catch (error) {
