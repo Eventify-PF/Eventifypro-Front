@@ -1,4 +1,4 @@
- "use client";
+"use client";
 
 import { createEvent } from "../../../redux/action/eventActions";
 import { getAllEventTypes } from "@/redux/action/eventTypeActions";
@@ -13,7 +13,7 @@ const EventPage = () => {
 
   const user = useSelector((state) => state.userReducer.searchUser);
 
-  
+  //console.log("tengo estos datos del user: ", user);
   const dispatch = useDispatch();
   const [event, setEvent] = useState({
     title: "",
@@ -48,9 +48,13 @@ const EventPage = () => {
     setErrors(validateForm({ ...event, [e.target.name]: e.target.value }));
   };
 
-  const handleSubmit =   (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-     dispatch(createEvent(event));
+    // console.log("El user que se tiene al final: ", user);
+
+    // console.log("Lo que se manda: ", event);
+    try {
+      await dispatch(createEvent(event));
       setMessage("You created a new event!");
       setEvent({
         title: "",
@@ -61,7 +65,9 @@ const EventPage = () => {
         status: "active",
         eventType: "",
       });
-     
+    } catch (error) {
+      setMessage("There is a problem:", error);
+    }
   };
 
   const handleDisabled = () => {
