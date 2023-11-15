@@ -1,15 +1,21 @@
 'use client'
 import { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 import StarRating from './StarRating';
+import { createReview, deleteReview, getReviews } from '@/redux/action/reviewAction';
+import Error from './Error';
 
 const Review = () => {
+  const dispatch  = useDispatch();
+  const reviewState = useSelector((state) => state.reviewReducer);
+  const { reviews } = reviewState;
   const [points, setPoints] = useState(0);
-  const [comment, setComment] = useState();
-  const [reviews, setReviews] = useState([])
+  const [comment, setComment] = useState('');
   const [rating, setRating] = useState(0);
   const [hover, setHover] = useState(0);
+
+  const [error, setError] = useState(false)
   const activeUser = useSelector((state) => state.userReducer.searchUser);
   const user = activeUser.email;
 
@@ -20,30 +26,38 @@ const Review = () => {
   };
 
   useEffect(() => {
-    const getReviews = async () => {
-      const reviewFromServer = await fetchReviews()
-      setReviews(reviewFromServer)
-    }
-    getReviews()
-  }, [])
+    dispatch(getReviews())
+  }, [dispatch])
 
-  const fetchReviews = async () => {
-    const res = await fetch('http://localhost:3001/comments')
-    const data = await res.json()
-    return data
-  }
+ 
   const handleSubmit = async(event) => {
     event.preventDefault();
+    if(points === 0 || [comment].includes('')){
+      setError(true)
+      return;
+    }
+
+    setError(false)
     try {
-      const newComent = { comment, points, user } 
-      const {data} = await axios.post('http://localhost:3001/comments', newComent);
-      setReviews([...reviews, data])
-      setPoints(0);
-      setRating(0);
-      setComment('');
-    } catch (error) {
+        const newComent = { comment, points, user } 
+        const {data} = await axios.post('http://localhost:3001/comments', newComent);
+        dispatch(createReview({id: data.id, comment, points, user:activeUser.name}))
+        setPoints(0);
+        setRating(0);
+        setComment('');
+      } catch (error) {
     }
   };
+
+
+  const deleteComment = async (id) => {
+    try {
+      await axios.delete(`http://localhost:3001/comments/delet/${id}`)
+      dispatch(deleteReview(id))
+    } catch (error) {
+      alert('Error Deleting This Task')
+    }
+  }
 
   const starRating = <>
       {[...Array(5)].map((_, index) => {
@@ -91,6 +105,7 @@ const Review = () => {
                 <div className="w-full lg:w-6/12 px-4">
                   <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-white">
                     <div className="flex-auto p-5 lg:p-10">
+                    { error &&  <Error><p>Rating and comment are mandatory</p></Error>}
                     <div className="relative w-full mb-3">
                       <p htmlFor="rating" className="block uppercase text-gray-700 text-xs font-bold mb-2">
                         Rating
@@ -100,7 +115,7 @@ const Review = () => {
                       <form onSubmit={handleSubmit}>
                         <div className="relative w-full mb-3">
                           <label htmlFor="message" className="block uppercase text-gray-700 text-xs font-bold mb-2">
-                            Message
+                            Comment
                           </label>
                           <textarea
                             id="message"
@@ -136,12 +151,15 @@ const Review = () => {
                 <div className="flex justify justify-between">
                   <div className='flex gap-2'>
                     <div class="w-7 h-7 text-center rounded-full bg-red-500"></div>
-                    <span>Jess Hopkins</span>
+                    <span>{review.user}</span>
                   </div>
-                  <div className="flex p-1 gap-1 text-orange-300">
-                    <StarRating points={review.points}/>
+                  <div className="flex flex-col items-center justify-center p-1 gap-1 text-orange-300">
+                    <StarRating points={review.points} />
+                    <button className="mt-2 px-4 py-2 bg-red-500 text-white font-bold rounded hover:bg-red-600" onClick={() => deleteComment(review.id)}>X</button>
                   </div>
+                  
                 </div>
+               
                 <p>{review.comment}</p>
                 </div>
               )
