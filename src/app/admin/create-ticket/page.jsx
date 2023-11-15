@@ -3,12 +3,13 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
-import { fetchEvents } from "@/redux/action/eventActions";
+import { getAllEvents } from "@/redux/action/eventActions";
 import validateTicket from "@/utils/validateTicket";
 import { createTicket } from "@/redux/action/ticketActions";
 
 const TicketPage = () => {
   const allEvents = useSelector((state) => state.eventReducer.allEvents);
+  const user = useSelector((state) => state.userReducer.searchUser);
   const dispatch = useDispatch();
 
   const [ticket, setTicket] = useState({
@@ -32,8 +33,10 @@ const TicketPage = () => {
   });
 
   useEffect(() => {
-    dispatch(fetchEvents());
-  }, [dispatch]);
+    if (user) {
+      dispatch(getAllEvents(user.id));
+    }
+  }, [dispatch, user]);
 
   const handleChange = (event) => {
     setTicket({
