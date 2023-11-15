@@ -3,4 +3,5 @@ export const CREATE_USER = "CREATE_USER";
 export const UPDATE_USER = "UPDATE_USER";
 export const POST_USER = "POST_USER";
 export const PASSWORD_USER = "PASSWORD_USER";
+export const USER_ORDER = "USER_ORDER";
 export const SEARCH_USER_BY_EMAIL = "SEARCH_USER_BY_EMAIL";

@@ -5,6 +5,7 @@ import {
   UPDATE_USER,
   SEARCH_USER_BY_EMAIL,
   PASSWORD_USER,
+  USER_ORDER,
 } from "../action-type/userConstans";
 
 //const endpoint = `http://localhost:3001/users`;
@@ -60,5 +61,12 @@ export const searchUserByEmail = (email) => {
       console.log(error);
       return error.message;
     }
+  };
+};
+
+export const getOrdersByUser = (idUser) => {
+  return async (dispatch) => {
+    const { data } = await axios.get(`/users/orders?idUser=${idUser}`);
+    return dispatch({ type: USER_ORDER, payload: data });
   };
 };
