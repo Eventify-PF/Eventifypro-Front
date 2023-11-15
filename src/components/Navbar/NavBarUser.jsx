@@ -43,7 +43,7 @@ const NavBarUser = () => {
             {searchUser.superAdmin && (
               <div>
                 <li className="block p-2 hover:bg-gray-200">
-                  <Link href={`/superadmin`}>Dashboard Users</Link>
+                  <Link href={`/admin/create-admin`}>Dashboard Users</Link>
                 </li>
               </div>
             )}

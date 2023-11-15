@@ -5,19 +5,21 @@ import axios from 'axios';
 import StarRating from './StarRating';
 import { createReview, deleteReview, getReviews } from '@/redux/action/reviewAction';
 import Error from './Error';
+import { useUser } from "@auth0/nextjs-auth0/client";
 
 const Review = () => {
   const dispatch  = useDispatch();
   const reviewState = useSelector((state) => state.reviewReducer);
+  const { user, isLoading } = useUser();
   const { reviews } = reviewState;
   const [points, setPoints] = useState(0);
   const [comment, setComment] = useState('');
   const [rating, setRating] = useState(0);
   const [hover, setHover] = useState(0);
-
+ 
   const [error, setError] = useState(false)
   const activeUser = useSelector((state) => state.userReducer.searchUser);
-  const user = activeUser.email;
+  const users = activeUser.email;
 
   
   const handleRatingChange = (selectedRating) => {
@@ -39,17 +41,18 @@ const Review = () => {
 
     setError(false)
     try {
-        const newComent = { comment, points, user } 
+        const newComent = { comment, points, users } 
         const {data} = await axios.post('http://localhost:3001/comments', newComent);
-        dispatch(createReview({id: data.id, comment, points, user:activeUser.name}))
+        dispatch(createReview({id: data.id, comment, points, users:activeUser.name}))
         setPoints(0);
         setRating(0);
         setComment('');
       } catch (error) {
     }
   };
-
-
+  
+  
+  
   const deleteComment = async (id) => {
     try {
       await axios.delete(`http://localhost:3001/comments/delet/${id}`)
@@ -129,6 +132,7 @@ const Review = () => {
                         <div className="text-center mt-6">
                           <button
                             type="submit"
+                            disabled={!user}
                             className="bg-orange-500 text-black text-center mx-auto active:bg-orange-500 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1"
                           >
                             Send
@@ -151,7 +155,7 @@ const Review = () => {
                 <div className="flex justify justify-between">
                   <div className='flex gap-2'>
                     <div class="w-7 h-7 text-center rounded-full bg-red-500"></div>
-                    <span>{review.user}</span>
+                    <span>{review.users}</span>
                   </div>
                   <div className="flex flex-col items-center justify-center p-1 gap-1 text-orange-300">
                     <StarRating points={review.points} />
@@ -167,6 +171,7 @@ const Review = () => {
           }
         </div>
       </div>
+     
     </section>
   );
 };
