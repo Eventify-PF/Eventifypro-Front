@@ -66,7 +66,8 @@ const EventPage = () => {
         eventType: "",
       });
     } catch (error) {
-      setMessage("There is a problem:", error);
+      alert(error.response.data);
+      setMessage("There is a problem:", error.response.data);
     }
   };
 
