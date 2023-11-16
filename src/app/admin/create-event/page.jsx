@@ -1,37 +1,45 @@
 "use client";
 
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
 import { createEvent } from "../../../redux/action/eventActions";
 import { getAllEventTypes } from "@/redux/action/eventTypeActions";
 import validateForm from "@/utils/validateForm";
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import Link from "next/link";
 
 const EventPage = () => {
-  const allEventTypes = useSelector(
-    (state) => state.eventTypeReducer.eventTypes
-  );
-
-  const user = useSelector((state) => state.userReducer.searchUser);
-
-  const dispatch = useDispatch();
   const [event, setEvent] = useState({
     title: "",
     location: "",
     date: "",
     description: "",
-    image: "",
+    image: "",  
     status: "active",
     eventType: "",
-    user: user?.email,
+    user: "",  
   });
 
+   
+  const [urlImage, setUrlImage] = useState("");
   const [errors, setErrors] = useState({});
   const [message, setMessage] = useState("");
 
+  
+  const allEventTypes = useSelector(
+    (state) => state.eventTypeReducer.eventTypes
+  );
+
+ 
+  const user = useSelector((state) => state.userReducer.searchUser);
+  const dispatch = useDispatch();
+
+  
   useEffect(() => {
     dispatch(getAllEventTypes());
   }, [dispatch]);
 
+   
   useEffect(() => {
     if (user) {
       setEvent((prevEvent) => ({
@@ -41,49 +49,85 @@ const EventPage = () => {
     }
   }, [user]);
 
-  const handleChange = (e) => {
-    setEvent({ ...event, [e.target.name]: e.target.value });
-    setErrors(validateForm({ ...event, [e.target.name]: e.target.value }));
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  // Función para manejar el cambio en la carga de la imagen
+  const uploadChange = async (event) => {
     try {
-      const response = await dispatch(createEvent(event));
- 
-      console.log(event)
- 
+      const file = event.target.files[0];
+      const data = new FormData();
+      data.append("file", file);
+      data.append("upload_preset", "eventify");
 
-      if (!response.error) {
-        setMessage("You created a new event!");
-        setEvent({
-          title: "",
-          location: "",
-          date: "",
-          description: "",
-          image: "",
-          status: "active",
-          eventType: "",
-        });
-      } else {
-        setMessage(`There is a problem: ${response.error.message}`);
-      }
+      const response = await axios.post(
+        "https://api.cloudinary.com/v1_1/dgbvwixwk/image/upload",
+        data
+      );
+
+      // Actualiza el estado local de la URL de la imagen
+      setUrlImage(response.data.secure_url);
+      // Actualiza el estado local del evento con la URL de la imagen
+      setEvent((prevEvent) => ({ ...prevEvent, image: response.data.secure_url }));
     } catch (error) {
- 
- 
-      setMessage(`There is a problem: ${error.message}`);
- 
- 
+      console.error("Error uploading image:", error);
     }
   };
 
+  // Función para manejar cambios en los campos del formulario
+  const handleChange = (e) => {
+    setEvent({ ...event, [e.target.name]: e.target.value });
+    // Valida el formulario y actualiza el estado de errores
+    setErrors(validateForm({ ...event, [e.target.name]: e.target.value }));
+  };
+
+  // Función para manejar el envío del formulario
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    // Valida el formulario antes de enviarlo
+    const formErrors = validateForm(event);
+    setErrors(formErrors);
+
+    // Verifica si hay errores antes de enviar la solicitud
+    if (Object.keys(formErrors).length === 0) {
+      try {
+        // Despacha la acción para crear un nuevo evento
+        const response = await dispatch(createEvent(event));
+
+        // Verifica si la acción fue exitosa o tiene errores
+        if (!response.error) {
+          setMessage("You created a new event!");
+          setEvent({
+            title: "",
+            location: "",
+            date: "",
+            description: "",
+            image: "",
+            status: "active",
+            eventType: "",
+            user: user?.email,
+          });
+          setUrlImage(""); // Limpia la URL de la imagen después de enviar el formulario
+        } else {
+          setMessage(`There is a problem: ${response.error.message}`);
+        }
+      } catch (error) {
+        setMessage(`There is a problem: ${error.message}`);
+      }
+    }
+  };
+
+  // Función para eliminar la imagen y la URL asociada
+  const deleteImage = () => {
+    setUrlImage("");
+    setEvent((prevEvent) => ({ ...prevEvent, image: "" }));
+  };
+
+  // Función para verificar si el botón de envío debe estar deshabilitado
   const handleDisabled = () => {
     for (let error in errors) {
       if (errors[error] !== "") return true;
     }
     return false;
   };
-
   return (
     <div className="flex justify-center items-center h-screen mt-12">
       <form
@@ -150,13 +194,16 @@ const EventPage = () => {
             Image:
           </label>
           <input
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            name="image"
-            placeholder="Enter a URL..."
-            type="url"
-            value={event.image}
-            onChange={handleChange}
+            type="file"
+            accept="image/"
+            onChange={uploadChange}
           />
+          {urlImage && (
+            <div className="flex flex-col items-center justify-center">
+              <img src={urlImage} alt="Uploaded" className="w-[180px] mb-2 mt-2 rounded" />
+              <button onClick={deleteImage} className="bg-red-500 text-white py-1 px-2 rounded hover:bg-red-700 text-sm">X</button>
+            </div>
+          )}
           <span className="text-red-500 text-xs italic">{errors.image}</span>
           <br />
           <label>New Event Type:</label>
@@ -197,9 +244,14 @@ const EventPage = () => {
             SUBMIT
           </button>
         </div>
+        <Link href="/admin/create-ticket"
+         className="block mt-4 text-center bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+          Go to Create Ticket
+        </Link>
       </form>
     </div>
   );
 };
 
 export default EventPage;
+
