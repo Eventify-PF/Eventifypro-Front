@@ -252,21 +252,20 @@ const EventPage = () => {
           {message && (
             <span className="text-red-500 text-xs italic">{message}</span>
           )}
-          <button
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-            disabled={handleDisabled()}
-          >
-            SUBMIT
-          </button>
+         <div className="mt-6 flex justify-end gap-4">
+                <Link
+                    href="/admin"
+                    className="flex h-10 items-center rounded-lg bg-gray-100 px-4 text-sm font-medium text-gray-600 transition-colors hover:bg-gray-200"
+                    >
+                    Cancel
+                </Link>
+                <button disabled={handleDisabled()} type="submit" className="flex h-10 items-center rounded-lg bg-blue-500 px-4 text-sm font-medium text-white transition-colors hover:bg-blue-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500 active:bg-blue-600 aria-disabled:cursor-not-allowed aria-disabled:opacity-50">SUBMIT</button>
+            </div>
         </div>
-        <Link href="/admin/create-ticket"
-         className="block mt-4 text-center bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-          Go to Create Ticket
-        </Link>
       </form>
     </div>
+
   );
 };
-
 export default EventPage;
 
