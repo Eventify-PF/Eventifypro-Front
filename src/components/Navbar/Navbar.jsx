@@ -2,13 +2,14 @@
 import React from "react";
 import Container from "../Container";
 import Logo from "../Logo";
-import MenuItem from "./MenuItem";
+
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
-import Login from "../../app/api/auth/loginButton";
-import Logout from "../../app/api/auth/logoutButton";
+import Login from "../../app/api/auth/loginButton";;
+import Logout from "../../app/api/auth/logoutButton";;
+import BannedUserPage from '../Banned/BannedUserPage';
 import { useUser } from "@auth0/nextjs-auth0/client";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector} from "react-redux";
 import { postUser } from "@/redux/action/userAction";
 import { useEffect } from "react";
 import { useState } from "react";
@@ -18,10 +19,14 @@ import NavBarUser from "./NavBarUser";
 const Navbar = () => {
   const { user, isLoading } = useUser();
   const dispatch = useDispatch();
+  const searchUser = useSelector((state) => state.userReducer.searchUser);
 
   const [showEmailVerificationAlert, setShowEmailVerificationAlert] =
     useState(false);
   const [registrationRequested, setRegistrationRequested] = useState(false);
+  const [userBanned, setUserBanned] = useState(false);
+  
+  
 
   useEffect(() => {
     if (user && !isLoading) {
@@ -51,32 +56,38 @@ const Navbar = () => {
       dispatch(searchUserByEmail(userEmail)); // Dispara la acción pasando el correo electrónico
     }
   }, [user, isLoading, dispatch]);
+  
+  
+  useEffect(() => {
+    // Check if the user is banned using the information from the searchUser action
+    if (searchUser && searchUser.ban) {
+      setUserBanned(true);
+    }
+  }, [searchUser]);
 
-  return (
-    <div className="fixed w-full bg-gray-800 z-30 shadow-sm">
-      <div className="py-4 border-b-[1px]">
-        <Container>
-          <div className="flex flex-row items-center justify-between gap-3 md:gap-0">
-            <Logo />
-            {/* <MenuItem /> */}
-            <div className="relative">
-              <div className="mt-2 sm:mt-0 sm:flex md:order-2">
-                {isLoading ? (
-                  <div>Cargando...</div>
-                ) : user ? (
-                  <div className="flex items-center space-x-3">
-                    {" "}
-                    {/* Contenedor flex para la imagen y el botón */}
-                    {/* <img
-                        src={user.picture}
-                        alt="Avatar"
-                        className="w-10 h-10 rounded-full mr-2" 
-                      /> */}
+
+	return ( 
+		<div className="fixed w-full bg-gray-800 z-10 shadow-sm">
+			<div className="py-4 border-b-[1px]">
+				<Container>
+					<div className="flex flex-row items-center justify-between gap-3 md:gap-0">
+						<Logo />
+						
+						<div className="relative">
+							<div className="mt-2 sm:mt-0 sm:flex md:order-2">
+								{isLoading ? (
+                    <div>Cargando...</div>
+                  ) : user ? (
+                    <div className="flex items-center"> 
+                      
                     <NavBarUser />
                     <Logout />
                   </div>
                 ) : (
+                    <div>
                   <Login />
+                    
+                    </div>
                 )}
               </div>
             </div>
@@ -95,8 +106,12 @@ const Navbar = () => {
           </a>
         </div>
       )}
+      {searchUser && searchUser.ban && <BannedUserPage />}
     </div>
-  );
-};
+	  
+	  );
+	}
+
+
 
 export default Navbar;

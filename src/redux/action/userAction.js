@@ -4,6 +4,8 @@ import {
   GET_USER,
   UPDATE_USER,
   SEARCH_USER_BY_EMAIL,
+  GET_ALL_USERS, 
+  SET_SEARCH_USER,
   PASSWORD_USER,
   USER_ORDER,
 } from "../action-type/userConstans";
@@ -12,20 +14,21 @@ import {
 //const endpoint = `https://server-eventifypro.onrender.com`;
 
 export function postUser(userData) {
-  console.log(userData);
-  return async (dispatch) => {
-    try {
-      const { data } = await axios.post("/users/register", userData);
-      dispatch({
-        type: POST_USER,
-        payload: data,
-      });
-    } catch (error) {
-      console.log(error);
-      return error.message;
-    }
-  };
-}
+  //console.log(userData);
+    return async (dispatch) => {
+      try {
+        const { data } = await axios.post("/users/register", userData);;
+        dispatch({
+          type: POST_USER,
+          payload: data,
+        });
+      } catch (error) {
+        console.log(error);
+        return error.message;
+      }
+    };
+  }
+
 
 export const getUser = (id) => {
   return async (dispatch) => {
@@ -52,18 +55,38 @@ export const passwordUser = (user) => {
   };
 };
 
-export const searchUserByEmail = (email) => {
-  return async (dispatch) => {
-    try {
-      const { data } = await axios.get(`/users?email=${email}`);
-      dispatch({ type: SEARCH_USER_BY_EMAIL, payload: data });
-    } catch (error) {
-      console.log(error);
-      return error.message;
-    }
+  export const searchUserByEmail = (email) => {
+    return async (dispatch) => {
+      try {
+        const { data } = await axios.get(`/users?email=${email}`);
+        dispatch({ type: SEARCH_USER_BY_EMAIL, payload: data });
+      } catch (error) {
+        console.log(error);
+        return error.message;
+      }
+    };
   };
-};
 
+  export const getAllUsers = () => {
+    return async (dispatch) => {
+      try {
+        const { data } = await axios.get("/users/todos");
+        console.log("Datos recibidos en la acción getAllUsers:", data);
+        dispatch({ type: GET_ALL_USERS, payload: data });
+      } catch (error) {
+        console.error("Error en la acción getAllUsers:", error);
+        return error.message;
+      }
+    };
+  };
+
+  export const setSearchUser = (searchTerm) => ({
+    type: "SET_SEARCH_USER",
+    payload: searchTerm,
+  });
+  
+  
+  
 export const getOrdersByUser = (idUser) => {
   return async (dispatch) => {
     const { data } = await axios.get(`/users/orders?idUser=${idUser}`);

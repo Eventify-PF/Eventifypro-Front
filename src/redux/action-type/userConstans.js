@@ -5,3 +5,5 @@ export const POST_USER = "POST_USER";
 export const PASSWORD_USER = "PASSWORD_USER";
 export const USER_ORDER = "USER_ORDER";
 export const SEARCH_USER_BY_EMAIL = "SEARCH_USER_BY_EMAIL";
+export const GET_ALL_USERS = "GET_ALL_USERS";
+export const SET_SEARCH_USER = "SET_SEARCH_USER";
