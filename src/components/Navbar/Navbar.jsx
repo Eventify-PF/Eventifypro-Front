@@ -2,7 +2,7 @@
 import React from "react";
 import Container from "../Container";
 import Logo from "../Logo";
-import MenuItem from "./MenuItem";
+
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import Login from "../../app/api/auth/loginButton";;
@@ -72,7 +72,7 @@ const Navbar = () => {
 				<Container>
 					<div className="flex flex-row items-center justify-between gap-3 md:gap-0">
 						<Logo />
-						<MenuItem/>
+						
 						<div className="relative">
 							<div className="mt-2 sm:mt-0 sm:flex md:order-2">
 								{isLoading ? (
