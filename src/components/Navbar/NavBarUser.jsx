@@ -32,12 +32,13 @@ const NavBarUser = () => {
             <li className="block p-2 hover:bg-gray-200" onClick={handleChange}>
               <Link href={`/user/my-tickets`}>My Tickets</Link>
             </li>
- 
+
             <li className="block p-2 hover:bg-gray-200">
               <Link href={`/reviews`}>Reviews</Link>
             </li>
-             
- 
+            <li className="block p-2 hover:bg-gray-200" onClick={handleChange}>
+              <Link href={`/contact`}>Client support</Link>
+            </li>
 
             {searchUser.isAdmin && !searchUser.superAdmin && (
               <li
@@ -48,7 +49,6 @@ const NavBarUser = () => {
               </li>
             )}
             {searchUser.superAdmin && searchUser.isAdmin && (
- 
               <div>
                 <li
                   className="block p-2 hover:bg-gray-200"
@@ -66,7 +66,6 @@ const NavBarUser = () => {
             )}
             {!searchUser.isAdmin && searchUser.superAdmin && (
               <div>
- 
                 <li
                   className="block p-2 hover:bg-gray-200"
                   onClick={handleChange}
@@ -77,7 +76,6 @@ const NavBarUser = () => {
                   className="block p-2 hover:bg-gray-200"
                   onClick={handleChange}
                 >
- 
                   <Link href={`/admin/create-admin`}>Dashboard Users</Link>
                 </li>
               </div>

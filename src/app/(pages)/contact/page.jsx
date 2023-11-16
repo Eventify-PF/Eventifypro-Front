@@ -96,7 +96,7 @@ export default function ContactPage() {
           ></textarea>
 
           {message && (
-            <span className="text-red-500 text-xs italic">{message}</span>
+            <span class="text-red-500 text-xs italic">{message}</span>
           )}
 
           <button
