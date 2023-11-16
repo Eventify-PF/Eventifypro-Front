@@ -16,27 +16,8 @@ const loadEvent = async (name) => {
   }
 };
 
-const TicketList = ({ orders }) => {
-  const [eventsData, setEventsData] = useState([]);
-  //console.log("acaaa: ", orders);
-
-  useEffect(() => {
-    const fetchEventsData = async () => {
-      const uniqueEvents = new Set();
-      orders.forEach((order) => uniqueEvents.add(order.event));
-
-      const eventsDataArray = await Promise.all(
-        Array.from(uniqueEvents).map(
-          async (uniqueEvent) => await loadEvent(uniqueEvent)
-        )
-      );
-
-      setEventsData(eventsDataArray.flatMap((events) => events));
-    };
-    fetchEventsData();
-  }, [orders]);
-
-  console.log("los eventos locales:", eventsData);
+const TicketList = ({ orders, events }) => {
+  console.log("los eventos locales:", events);
 
   return (
     <div className="flex justify-center">
@@ -70,12 +51,9 @@ const TicketList = ({ orders }) => {
               </tr>
             </thead>
             {orders.map((order) => {
-              const eventNow = eventsData?.filter(
+              const eventNow = events.filter(
                 (event) => event.title === order.event
               );
-              console.log("PRUEBAA: ", eventNow);
-
-              // Verifica si hay al menos un evento que coincida
               if (eventNow && eventNow.length > 0) {
                 console.log("eventNow: ", eventNow);
 
