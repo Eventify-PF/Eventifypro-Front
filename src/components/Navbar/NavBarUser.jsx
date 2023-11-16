@@ -82,7 +82,7 @@ const NavBarUser = () => {
       </div>
     );
   } else {
-    return <h2>PRUEBA</h2>;
+    return null;
   }
 };
 export default NavBarUser;
