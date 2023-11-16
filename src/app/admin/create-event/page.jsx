@@ -265,6 +265,7 @@ const EventPage = () => {
       </form>
     </div>
 
+   
   );
 };
 export default EventPage;
