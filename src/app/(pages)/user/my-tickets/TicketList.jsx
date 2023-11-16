@@ -18,6 +18,7 @@ const loadEvent = async (name) => {
 
 const TicketList = ({ orders, events }) => {
   console.log("los eventos locales:", events);
+  console.log("quiero ver los orders dentro: ", orders);
 
   return (
     <div className="flex justify-center">
@@ -50,60 +51,62 @@ const TicketList = ({ orders, events }) => {
                 </th>
               </tr>
             </thead>
-            {orders.map((order) => {
-              const eventNow = events.filter(
-                (event) => event.title === order.event
-              );
-              if (eventNow && eventNow.length > 0) {
-                console.log("eventNow: ", eventNow);
+            {orders &&
+              orders.map((order) => {
+                const eventNow = events.filter((event) => {
+                  return event.title === order.event;
+                });
+                console.log("EVENTNOW ANTES DE IF:", eventNow);
+                if (eventNow && eventNow.length > 0) {
+                  console.log("eventNow: ", eventNow);
 
-                return (
-                  <tbody
-                    className="bg-white divide-y divide-gray-200"
-                    key={order.id}
-                  >
-                    <tr>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div>
-                          <img
-                            src={eventNow[0].image}
-                            alt={order.event}
-                            height="100"
-                            width="100"
-                          />
-                        </div>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm">
-                        <div>{order.event}</div>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm">
-                        <div>{order.ticketTitle}</div>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm">
-                        <div className="flex items-center flex-col">
-                          <div>{eventNow[0].location}</div>
-                          <div>{formatDateToLocal(eventNow[0].date)}</div>
-                        </div>
-                      </td>
-                      {/* <td className="px-6 py-4 whitespace-nowrap">
+                  return (
+                    <tbody
+                      className="bg-white divide-y divide-gray-200"
+                      key={order.id}
+                    >
+                      <tr>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <div>
+                            <img
+                              src={eventNow[0].image}
+                              alt={order.event}
+                              height="100"
+                              width="100"
+                            />
+                          </div>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm">
+                          <div>{order.event}</div>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm">
+                          <div>{order.ticketTitle}</div>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm">
+                          <div className="flex items-center flex-col">
+                            <div>{eventNow[0].location}</div>
+                            <div>{formatDateToLocal(eventNow[0].date)}</div>
+                          </div>
+                        </td>
+                        {/* <td className="px-6 py-4 whitespace-nowrap">
                         <div>{eventNow[0].date}</div>
                       </td> */}
-                      <td className="px-6 py-4 whitespace-nowrap text-sm">
-                        <div>${order.price}</div>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm">
-                        <div>{order.ticketId}</div>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm">
-                        <div>{order.id}</div>
-                      </td>
-                    </tr>
-                  </tbody>
-                );
-              }
+                        <td className="px-6 py-4 whitespace-nowrap text-sm">
+                          <div>${order.price}</div>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm">
+                          <div>{order.ticketId}</div>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm">
+                          <div>{order.id}</div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  );
+                }
 
-              return null; // O maneja el caso en el que no hay coincidencias
-            })}
+                return null; // O maneja el caso en el que no hay coincidencias
+              })}
           </table>
         </div>
       </div>
