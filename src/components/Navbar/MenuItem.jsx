@@ -12,6 +12,7 @@ const MenuItem = () => {
           <li className="py-2 px-8 flex">
             <Link href={'/event'}>Events</Link>
           </li>
+ 
         </ul>
         
       </div>
