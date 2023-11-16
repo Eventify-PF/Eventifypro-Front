@@ -4,6 +4,7 @@ import { passwordUser, updateUser } from "@/redux/action/userAction";
 import { useEffect } from "react";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
+import Link from "next/link";
 
 const UserDetail = ({ userDetail }) => {
   const dispatch = useDispatch();
@@ -17,6 +18,8 @@ const UserDetail = ({ userDetail }) => {
     email: userDetail.email,
     location: userDetail.location,
     phone: userDetail.phone,
+    isAdmin: userDetail.isAdmin,
+    superAdmin: userDetail.superAdmin,
   });
 
   const [pass, setPass] = useState({
@@ -39,9 +42,14 @@ const UserDetail = ({ userDetail }) => {
         email: userDetail.email || "",
         location: userDetail.location || "",
         phone: userDetail.phone || "",
+        isAdmin: userDetail.isAdmin || false,
+        superAdmin: userDetail.superAdmin || false,
       });
     }
   }, [userDetail]);
+
+  // console.log("estado local: ", user);
+  // console.log("parametro: ", userDetail);
 
   const handleChange = (e) => {
     setUser({ ...user, [e.target.name]: e.target.value });
@@ -81,11 +89,11 @@ const UserDetail = ({ userDetail }) => {
 
   return (
     <div className="flex flex-col justify-center items-center">
-      <div className="bg-white shadow-md rounded w-full max-w-md">
-        <div className="flex w-full ">
+      <div className="bg-white shadow-md rounded w-full max-w-7xl">
+        <div className="flex w-full">
           <button
             onClick={() => handleOptionChange("form1")}
-            className={`w-1/2 rounded-l-md ${
+            className={`w-1/4 rounded-l-md ${
               option === "form1"
                 ? "bg-blue-500 text-white"
                 : "bg-white text-gray-700"
@@ -93,7 +101,7 @@ const UserDetail = ({ userDetail }) => {
           >
             Personal information
           </button>
-          <button
+          {/* <button
             onClick={() => handleOptionChange("form2")}
             className={`w-1/2 rounded-r-md ${
               option === "form2"
@@ -102,49 +110,53 @@ const UserDetail = ({ userDetail }) => {
             } font-bold py-2 px-4 focus:outline-none focus:shadow-outline`}
           >
             Password
-          </button>
+          </button> */}
         </div>
         <div>
-          {option === "form1" ? (
-            <div className="flex justify-center items-center mt-4">
-              <form onSubmit={handleSubmit} className="px-8 pt-6 pb-8">
-                <h2 className="text-2xl mb-4">
-                  Edit your data {userDetail.name}!
-                </h2>
-                <label className="block text-gray-700 text-sm font-bold mb-2">
+          {/* {option === "form1" ? ( */}
+          <div className="flex items-center mt-4 ">
+            <form
+              onSubmit={handleSubmit}
+              className="px-8 pt-8 pb-6 w-full mx-auto"
+            >
+              <h2 className="text-2xl mb-4">Edit your data {user.name}!</h2>
+              <div className="flex mb-4 items-center">
+                <label className="block text-gray-700 text-sm font-bold mb-4 mr-4">
                   Name:
                 </label>
                 <input
-                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  className="shadow appearance-none border rounded w-full max-w-full py-2 px-4 text-gray-700 leading-tight  focus:outline-none focus:shadow-outline"
                   name="name"
                   type="text"
                   value={user.name}
                   onChange={handleChange}
                 />
-                <br />
-                <label className="block text-gray-700 text-sm font-bold mb-2">
+
+                <label className="block text-gray-700 text-sm font-bold mb-4 mr-4 ml-4">
                   Lastname:
                 </label>
                 <input
-                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  className="shadow appearance-none border rounded w-full max-w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                   name="lastname"
                   type="text"
                   value={user.lastname}
                   onChange={handleChange}
                 />
-                <br />
-                <label className="block text-gray-700 text-sm font-bold mb-2">
+              </div>
+              <div className="flex mb-4 items-center">
+                <label className="block text-gray-700 text-sm font-bold mb-4 mr-4">
                   Email:
                 </label>
                 <input
-                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  className="shadow appearance-none border rounded w-full max-w-full py-2 px-3 text-gray-400 leading-tight focus:outline-none focus:shadow-outline bg-gray-200"
                   name="email"
                   type="email"
                   value={user.email}
                   readOnly
                 />
-                <br />
-                <label className="block text-gray-700 text-sm font-bold mb-2">
+              </div>
+              <div className="flex mb-4 mt-6 items-center">
+                <label className="block text-gray-700 text-sm font-bold mb-4 mr-4">
                   Location:
                 </label>
                 <input
@@ -154,8 +166,8 @@ const UserDetail = ({ userDetail }) => {
                   value={user.location}
                   onChange={handleChange}
                 />
-                <br />
-                <label className="block text-gray-700 text-sm font-bold mb-2">
+
+                <label className="block text-gray-700 text-sm font-bold mb-4 mr-4 ml-4">
                   Phone:
                 </label>
                 <input
@@ -166,15 +178,57 @@ const UserDetail = ({ userDetail }) => {
                   onChange={handleChange}
                 />
                 <br />
-                {message && (
-                  <span className="text-red-500 text-xs italic">{message}</span>
-                )}
-                <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-                  SUBMIT
-                </button>
-              </form>
-            </div>
-          ) : (
+              </div>
+              <div className="flex mb-4 mt-6 items-center">
+                <label className="block text-gray-700 text-sm font-bold mb-4 mr-4">
+                  isAdmin:
+                </label>
+                <input
+                  className="shadow appearance-none border rounded w-full max-w-full py-2 px-3 text-gray-400 leading-tight focus:outline-none focus:shadow-outline bg-gray-200"
+                  name="isAdmin"
+                  type="text"
+                  value={user.isAdmin}
+                  readOnly
+                />
+
+                <label className="block text-gray-700 text-sm font-bold mb-4 mr-4 ml-4">
+                  superAdmin:
+                </label>
+                <input
+                  className="shadow appearance-none border rounded w-full max-w-full py-2 px-3 text-gray-400 leading-tight focus:outline-none focus:shadow-outline bg-gray-200"
+                  name="superAdmin"
+                  type="text"
+                  value={user.superAdmin}
+                  readOnly
+                />
+                <br />
+              </div>
+              <div className="flex justify-end items-center mt-12">
+                <div className="flex items-center">
+                  <span className="ml-4 text-gray-400 text-sm font-bold">
+                    Do you want to change your status? Be admin or super admin?
+                    Contact us!
+                  </span>
+                  <Link href={`/contact`}>
+                    <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ml-2">
+                      CONTACT
+                    </button>
+                  </Link>
+                </div>
+                <div className="flex flex-col ml-4">
+                  <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                    SUBMIT
+                  </button>
+                  {message && (
+                    <span className="text-red-500 text-xs italic">
+                      {message}
+                    </span>
+                  )}
+                </div>
+              </div>
+            </form>
+          </div>
+          {/* ) : (
             <div className="flex justify-center items-center mt-4">
               <form onSubmit={handleSubmitPass} className="px-8 pt-6 pb-8">
                 <h2 className="text-2xl mb-4">Change your password!</h2>
@@ -218,7 +272,7 @@ const UserDetail = ({ userDetail }) => {
                 </button>
               </form>
             </div>
-          )}
+          )} */}
         </div>
       </div>
     </div>

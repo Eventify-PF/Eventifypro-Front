@@ -5,11 +5,14 @@ import { AddCart, hideLoading, removeFromCart } from "@/redux/action/cartAction"
 import { useSelector, useDispatch } from 'react-redux';
 import Link from "next/link";
 import axios from "axios";
+import { useUser } from "@auth0/nextjs-auth0/client";
 
 const CartPage = () => {
   const dispatch = useDispatch();
   const ticketsState = useSelector((state) => state.cartReducer);
   const {cartItems, itemsPrice, loading} = ticketsState;
+  const { user, isLoading } = useUser();
+  
 console.log(cartItems)
   const removeFromCartHandler = (id) => {
     dispatch(removeFromCart(id))
@@ -120,6 +123,7 @@ console.log(cartItems)
                 <li>
                   <button
                     onClick={handleFinish}
+                    disabled={!user}
                     className="bg-slate-500 px-5 py-2 rounded-lg uppercase text-white font-bold text-sm w-full"
                   >
                     Proceed to checkout
