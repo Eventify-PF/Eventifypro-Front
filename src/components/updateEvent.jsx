@@ -1,6 +1,5 @@
 "use client";
 
-import { formatDateToLocal } from "@/helpers";
 import { updateEvent } from "@/redux/action/eventActions";
 import { getAllEventTypes } from "@/redux/action/eventTypeActions";
 import validateForm from "@/utils/validateForm";
@@ -20,11 +19,14 @@ export default function EditEventForm({ detailEvent }) {
     dispatch(getAllEventTypes());
   }, []);
 
+  const dateFromBackend = detailEvent.date;
+  const formattedDate = new Date(dateFromBackend).toISOString().slice(0, 16);
+
   const [event, setEvent] = useState({
     id: detailEvent.id,
     title: detailEvent.title,
     location: detailEvent.location,
-    date: detailEvent.date,
+    date: formattedDate,
     description: detailEvent.description,
     image: detailEvent.image,
     eventType: detailEvent.eventType,
@@ -47,14 +49,6 @@ export default function EditEventForm({ detailEvent }) {
     try {
       dispatch(updateEvent(event));
       setMessage("You updated a new event!");
-      setEvent({
-        title: "",
-        location: "",
-        date: "",
-        description: "",
-        image: "",
-        eventType: "",
-      });
     } catch (error) {
       setMessage("There is a problem:", error);
     }
