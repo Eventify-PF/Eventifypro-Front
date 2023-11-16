@@ -3,7 +3,7 @@ import {  useSelector } from "react-redux";
 const MenuItem = () => {
   const searchUser = useSelector((state) => state.userReducer.searchUser);
   const { isAdmin } = searchUser;
-  
+  //console.log(searchUser)
   
   if (searchUser && searchUser.isAdmin) {
     return (
@@ -12,13 +12,9 @@ const MenuItem = () => {
           <li className="py-2 px-8 flex">
             <Link href={'/event'}>Events</Link>
           </li>
-          
-          {searchUser.isAdmin && (
-            <li className="py-2 px-8 flex">
-              <Link href={'/admin'}>Admin</Link>
-            </li>
-          )}
+ 
         </ul>
+        
       </div>
     );
   } else {

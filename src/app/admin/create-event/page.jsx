@@ -13,7 +13,6 @@ const EventPage = () => {
 
   const user = useSelector((state) => state.userReducer.searchUser);
 
-  //console.log("tengo estos datos del user: ", user);
   const dispatch = useDispatch();
   const [event, setEvent] = useState({
     title: "",
@@ -27,7 +26,6 @@ const EventPage = () => {
   });
 
   const [errors, setErrors] = useState({});
-
   const [message, setMessage] = useState("");
 
   useEffect(() => {
@@ -50,23 +48,32 @@ const EventPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // console.log("El user que se tiene al final: ", user);
-
-    // console.log("Lo que se manda: ", event);
     try {
-      await dispatch(createEvent(event));
-      setMessage("You created a new event!");
-      setEvent({
-        title: "",
-        location: "",
-        date: "",
-        description: "",
-        image: "",
-        status: "active",
-        eventType: "",
-      });
+      const response = await dispatch(createEvent(event));
+ 
+      console.log(event)
+ 
+
+      if (!response.error) {
+        setMessage("You created a new event!");
+        setEvent({
+          title: "",
+          location: "",
+          date: "",
+          description: "",
+          image: "",
+          status: "active",
+          eventType: "",
+        });
+      } else {
+        setMessage(`There is a problem: ${response.error.message}`);
+      }
     } catch (error) {
-      setMessage("There is a problem:", error);
+ 
+ 
+      setMessage(`There is a problem: ${error.message}`);
+ 
+ 
     }
   };
 

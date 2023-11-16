@@ -19,13 +19,13 @@ const EventDetail = ({detailEvent}) => {
   
   const {cartItems, itemsPrice, loading} = ticketsState
   const dispatch = useDispatch();
-  if (tickets.length === 0) {
-    return (
-      <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-gray-500 text-white text-center p-3 uppercase font-bold mb-3 rounded-md">
-        THERE ARE NO TICKETS AVAILABLE FOR THIS EVENT
-      </div>
-    );
-  }
+  // if (tickets.length === 0) {
+  //   return (
+  //     <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-gray-500 text-white text-center p-3 uppercase font-bold mb-3 rounded-md">
+  //       THERE ARE NO TICKETS AVAILABLE FOR THIS EVENT
+  //     </div>
+  //   );
+  // }
 
   const addTicket = (ticket) => {
     if(ticket.quantity > 0){
