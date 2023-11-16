@@ -124,7 +124,7 @@ const CartPage = () => {
                   <button
                     onClick={handleFinish}
                     disabled={!user}
-                    className="bg-slate-500 px-5 py-2 rounded-lg uppercase text-white font-bold text-sm w-full"
+                    className={`bg-orange-500 text-black text-center mx-auto active:bg-orange-500 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ${!user ? 'opacity-50 cursor-not-allowed' : 'hover:cursor-pointer'}`}
                   >
                     Proceed to checkout
                   </button>

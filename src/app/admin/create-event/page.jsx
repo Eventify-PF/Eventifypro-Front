@@ -6,9 +6,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { createEvent } from "../../../redux/action/eventActions";
 import { getAllEventTypes } from "@/redux/action/eventTypeActions";
 import validateForm from "@/utils/validateForm";
+ 
+import Link from "next/link";
 
 const EventPage = () => {
-  // Estado local para el evento
+ 
   const [event, setEvent] = useState({
     title: "",
     location: "",
@@ -24,16 +26,20 @@ const EventPage = () => {
   const [urlImage, setUrlImage] = useState("");
 
   // Estado local para los errores del formulario
+ 
   const [errors, setErrors] = useState({});
 
   // Estado local para el mensaje de éxito o error
   const [message, setMessage] = useState("");
 
-  // Selector para obtener tipos de evento desde el estado global
   const allEventTypes = useSelector(
     (state) => state.eventTypeReducer.eventTypes
   );
 
+ 
+
+  
+ 
   // Selector para obtener el usuario desde el estado global
   const user = useSelector((state) => state.userReducer.searchUser);
 
@@ -41,11 +47,14 @@ const EventPage = () => {
   const dispatch = useDispatch();
 
   // Efecto para obtener todos los tipos de evento al montar el componente
+ 
   useEffect(() => {
     dispatch(getAllEventTypes());
   }, [dispatch]);
 
+ 
   // Efecto para actualizar el campo 'user' del evento cuando cambia el usuario
+ 
   useEffect(() => {
     if (user) {
       setEvent((prevEvent) => ({
@@ -250,6 +259,10 @@ const EventPage = () => {
             SUBMIT
           </button>
         </div>
+        <Link href="/admin/create-ticket"
+         className="block mt-4 text-center bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+          Go to Create Ticket
+        </Link>
       </form>
     </div>
   );
