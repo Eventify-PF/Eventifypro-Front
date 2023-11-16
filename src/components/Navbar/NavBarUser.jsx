@@ -33,9 +33,9 @@ const NavBarUser = () => {
               <Link href={`/user/my-tickets`}>My Tickets</Link>
             </li>
 
-            <li className="block p-2 hover:bg-gray-200">
-              <Link href={`/reviews`}>Reviews</Link>
-            </li>
+            //<li className="block p-2 hover:bg-gray-200">
+              //<Link href={`/reviews`}>Reviews</Link>
+            //</li>
 
             {searchUser.isAdmin && !searchUser.superAdmin && (
               <li
