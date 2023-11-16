@@ -3,7 +3,7 @@ import Link from "next/link";
 
 const Logo = () => {
   return (
-    <Link href="/event">
+    <Link href="/">
       <div className="flex items-center">
         <Image
           className="hidden md:block cursor-pointer"
