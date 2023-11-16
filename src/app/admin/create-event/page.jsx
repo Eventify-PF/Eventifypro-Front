@@ -6,40 +6,55 @@ import { useDispatch, useSelector } from "react-redux";
 import { createEvent } from "../../../redux/action/eventActions";
 import { getAllEventTypes } from "@/redux/action/eventTypeActions";
 import validateForm from "@/utils/validateForm";
+ 
 import Link from "next/link";
 
 const EventPage = () => {
+ 
   const [event, setEvent] = useState({
     title: "",
     location: "",
     date: "",
     description: "",
-    image: "",  
+    image: "", // Aquí se almacenará la URL de la imagen
     status: "active",
     eventType: "",
-    user: "",  
+    user: "", // Cambié el nombre de 'user' para asignarlo después
   });
 
-   
+  // Estado local para la URL de la imagen
   const [urlImage, setUrlImage] = useState("");
+
+  // Estado local para los errores del formulario
+ 
   const [errors, setErrors] = useState({});
+
+  // Estado local para el mensaje de éxito o error
   const [message, setMessage] = useState("");
 
-  
   const allEventTypes = useSelector(
     (state) => state.eventTypeReducer.eventTypes
   );
 
  
-  const user = useSelector((state) => state.userReducer.searchUser);
-  const dispatch = useDispatch();
 
   
+ 
+  // Selector para obtener el usuario desde el estado global
+  const user = useSelector((state) => state.userReducer.searchUser);
+
+  // Despachador de acciones Redux
+  const dispatch = useDispatch();
+
+  // Efecto para obtener todos los tipos de evento al montar el componente
+ 
   useEffect(() => {
     dispatch(getAllEventTypes());
   }, [dispatch]);
 
-   
+ 
+  // Efecto para actualizar el campo 'user' del evento cuando cambia el usuario
+ 
   useEffect(() => {
     if (user) {
       setEvent((prevEvent) => ({
