@@ -11,14 +11,15 @@ const MyTicketsPage = () => {
 
   useEffect(() => {
     if (user) {
-      dispatch(getOrdersByUser(user.id));
+      dispatch(getOrdersByUser());
     }
   }, [dispatch, user]);
-  // console.log("usuarioData:", user.id);
-  //console.log("los orders:", orders);
+
+  const ordersUser = orders.filter((order) => order.UserId === user.id);
+
   return (
     <div>
-      <TicketList orders={orders} />
+      <TicketList orders={ordersUser} />
     </div>
   );
 };
