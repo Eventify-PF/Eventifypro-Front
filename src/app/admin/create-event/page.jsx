@@ -264,7 +264,7 @@ const EventPage = () => {
         </div>
       </form>
     </div>
-
+ 
   );
 };
 

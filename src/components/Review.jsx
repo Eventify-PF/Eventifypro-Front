@@ -41,12 +41,10 @@ const Review = () => {
 
     setError(false)
     try {
- 
-        const newComent = { comment, points, user } 
+        const newComent = { comment, points, users } 
         //const {data} = await axios.post('http://localhost:3001/comments', newComent);
       const {data} = await axios.post('https://server-eventifypro.onrender.com/comments', newComent);
-        dispatch(createReview({id: data.id, comment, points, user:activeUser.name}))
- 
+        dispatch(createReview({id: data.id, comment, points, users:activeUser.name}))
         setPoints(0);
         setRating(0);
         setComment('');
