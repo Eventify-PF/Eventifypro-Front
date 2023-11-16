@@ -17,7 +17,6 @@ const TicketPage = () => {
     price: "",
     stock: "",
     description: "",
-    image: "",
     state: "active",
     event: "",
   });
@@ -27,7 +26,6 @@ const TicketPage = () => {
     price: "",
     stock: "",
     description: "",
-    image: "",
     state: "",
     event: "",
   });
@@ -68,7 +66,6 @@ const TicketPage = () => {
         price: "",
         stock: "",
         description: "",
-        image: "",
         state: "active",
         event: "",
       });
@@ -141,21 +138,6 @@ const TicketPage = () => {
           {errors.description && (
             <p className="text-red-500 text-xs italic">{errors.description}</p>
           )}
-
-          <label className="block text-gray-700 text-sm font-bold mb-2">
-            Image
-          </label>
-          <input
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            type="text"
-            name="image"
-            value={ticket.image}
-            onChange={handleChange}
-          />
-          {errors.image && (
-            <p className="text-red-500 text-xs italic">{errors.image}</p>
-          )}
-
           <label className="block text-gray-700 text-sm font-bold mb-2">
             Event
           </label>
