@@ -4,10 +4,8 @@ import { formatDateToLocal } from "@/helpers";
 
 const loadEvent = async (name) => {
   try {
-    const response = await axios.get(
-      `http://localhost:3001/events?name=${name}`
-    );
-    //const response = await axios.get(`https://server-eventifypro.onrender.com/events/${id}`);
+    //const response = await axios.get(`http://localhost:3001/events?name=${name}`);
+    const response = await axios.get(`https://server-eventifypro.onrender.com/events/${id}`);
     const data = response.data;
     return data;
   } catch (error) {
