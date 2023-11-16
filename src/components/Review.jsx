@@ -41,12 +41,9 @@ const Review = () => {
 
     setError(false)
     try {
- 
-        const newComent = { comment, points, user } 
-        //const {data} = await axios.post('http://localhost:3001/comments', newComent);
-      const {data} = await axios.post('https://server-eventifypro.onrender.com/comments', newComent);
-        dispatch(createReview({id: data.id, comment, points, user:activeUser.name}))
- 
+        const newComent = { comment, points, users } 
+        const {data} = await axios.post('http://localhost:3001/comments', newComent);
+        dispatch(createReview({id: data.id, comment, points, users:activeUser.name}))
         setPoints(0);
         setRating(0);
         setComment('');
@@ -58,8 +55,7 @@ const Review = () => {
   
   const deleteComment = async (id) => {
     try {
-      //await axios.delete(`http://localhost:3001/comments/delet/${id}`)
-      await axios.delete(`https://server-eventifypro.onrender.com/comments/delet/${id}`)
+      await axios.delete(`http://localhost:3001/comments/delet/${id}`)
       dispatch(deleteReview(id))
     } catch (error) {
       alert('Error Deleting This Task')
