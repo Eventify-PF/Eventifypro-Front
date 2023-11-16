@@ -51,9 +51,9 @@ console.log(cartItems)
   dispatch(hideLoading());
 }, []);
 
-useEffect(() => {
-  localStorage.setItem('cart', JSON.stringify(cartItems));
-}, [cartItems]);
+//useEffect(() => {
+  //localStorage.setItem('cart', JSON.stringify(cartItems));
+//}, [cartItems]);
 
   return (
     <div className="max-w-[2520px] mx-autoxl:px-20 md:px-10 sm:px-2 px-4">
