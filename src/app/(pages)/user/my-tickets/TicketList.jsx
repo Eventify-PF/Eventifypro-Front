@@ -56,6 +56,7 @@ const TicketList = ({ orders, events }) => {
                 const eventNow = events.filter((event) => {
                   return event.title === order.event;
                 });
+                console.log("EVENTNOW ANTES DE IF:", eventNow);
                 if (eventNow && eventNow.length > 0) {
                   console.log("eventNow: ", eventNow);
 
