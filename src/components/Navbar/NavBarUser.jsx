@@ -15,7 +15,7 @@ const NavBarUser = () => {
     return (
       <div className="relative flex items-center">
         <button onClick={handleChange} className="flex items-center">
-          <span className="text-white">{searchUser.name},Tu cuenta</span>
+          <span className="text-white">{searchUser.name}</span>
           <Image
             src="images/arrow-down.svg"
             height="25"
@@ -32,12 +32,10 @@ const NavBarUser = () => {
             <li className="block p-2 hover:bg-gray-200" onClick={handleChange}>
               <Link href={`/user/my-tickets`}>My Tickets</Link>
             </li>
- 
+
             <li className="block p-2 hover:bg-gray-200">
               <Link href={`/reviews`}>Reviews</Link>
             </li>
-             
- 
 
             {searchUser.isAdmin && !searchUser.superAdmin && (
               <li
@@ -48,7 +46,6 @@ const NavBarUser = () => {
               </li>
             )}
             {searchUser.superAdmin && searchUser.isAdmin && (
- 
               <div>
                 <li
                   className="block p-2 hover:bg-gray-200"
@@ -66,7 +63,6 @@ const NavBarUser = () => {
             )}
             {!searchUser.isAdmin && searchUser.superAdmin && (
               <div>
- 
                 <li
                   className="block p-2 hover:bg-gray-200"
                   onClick={handleChange}
@@ -77,7 +73,6 @@ const NavBarUser = () => {
                   className="block p-2 hover:bg-gray-200"
                   onClick={handleChange}
                 >
- 
                   <Link href={`/admin/create-admin`}>Dashboard Users</Link>
                 </li>
               </div>
@@ -86,6 +81,8 @@ const NavBarUser = () => {
         )}
       </div>
     );
+  } else {
+    return null;
   }
 };
 export default NavBarUser;
